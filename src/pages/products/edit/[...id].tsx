@@ -19,7 +19,7 @@ export default function EditProductPage() {
     })
     setTimeout(() => {
       setShowComponent(true)
-    }, 80)
+    }, 200)
   }, [id])
   console.log( productInfo )
 
