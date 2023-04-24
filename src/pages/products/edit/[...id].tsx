@@ -19,14 +19,16 @@ export default function EditProductPage() {
     })
     setTimeout(() => {
       setShowComponent(true)
-    }, 1000)
+    }, 500)
   }, [id])
   console.log( productInfo )
 
-  return (
-    <Layout>
-      <h1>Edit product</h1>
-      {showComponent && <ProductForm {...productInfo} />}
-    </Layout>
-  )
+  if(showComponent) {
+    return (
+      <Layout>
+        <h1>Edit product</h1>
+        <ProductForm {...productInfo} />
+      </Layout>
+    )
+  }
 }
