@@ -11,13 +11,11 @@ interface ExistingType {
   price?: string
 }
 
-
 export default function ProductForm({
   title: existingTitle,
   description: existingDescription,
   price: existingPrice
-}:ExistingType) {
-
+}: ExistingType) {
   const [title, setTitle] = useState(existingTitle)
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)

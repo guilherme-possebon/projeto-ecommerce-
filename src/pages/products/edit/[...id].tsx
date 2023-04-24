@@ -8,6 +8,7 @@ export default function EditProductPage() {
   const router = useRouter()
   const { id } = router.query
   const [productInfo, setProductInfo] = useState({})
+  const [showComponent, setShowComponent] = useState(false)
 
   useEffect(() => {
     if (!id) {
@@ -16,14 +17,15 @@ export default function EditProductPage() {
     axios.get('/api/products?id=' + id).then((response) => {
       setProductInfo(response.data)
     })
-    
+    setTimeout(() => {
+      setShowComponent(true)
+    }, 80)
   }, [id])
-    console.log( productInfo, 1 )
 
   return (
     <Layout>
       <h1>Edit product</h1>
-      <ProductForm {...productInfo} />
+      {showComponent && <ProductForm {...productInfo} />}
     </Layout>
   )
 }
