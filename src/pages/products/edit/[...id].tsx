@@ -21,6 +21,7 @@ export default function EditProductPage() {
       setShowComponent(true)
     }, 80)
   }, [id])
+  console.log( productInfo )
 
   return (
     <Layout>
