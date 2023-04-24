@@ -3,7 +3,7 @@ import { model, Schema, models } from 'mongoose'
 export interface ProductInterface {
   title: string
   description: string
-  price: number
+  price: number | string
   _id: string
 }
 
