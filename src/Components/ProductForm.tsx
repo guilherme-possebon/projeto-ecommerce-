@@ -18,9 +18,9 @@ export default function ProductForm({
   price: existingPrice
 }:ExistingType) {
 
-  const [title, setTitle] = useState(existingTitle || '')
-  const [description, setDescription] = useState(existingDescription || '')
-  const [price, setPrice] = useState(existingPrice ||'')
+  const [title, setTitle] = useState(existingTitle)
+  const [description, setDescription] = useState(existingDescription)
+  const [price, setPrice] = useState(existingPrice)
   const [goToProducts, setGoToProducts] = useState(false)
   const router = useRouter()
 
