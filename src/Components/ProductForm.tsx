@@ -25,8 +25,6 @@ export default function ProductForm({
 
   const router = useRouter()
 
-  console.log({ _id })
-
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
     const data = { title, description, price }
