@@ -9,9 +9,11 @@ interface ExistingType {
   description?: string
   existingPrice?: object | string
   price?: string
+  _id?: string
 }
 
 export default function ProductForm({
+  _id,
   title: existingTitle,
   description: existingDescription,
   price: existingPrice
@@ -20,20 +22,31 @@ export default function ProductForm({
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)
   const [goToProducts, setGoToProducts] = useState(false)
+
   const router = useRouter()
 
-  async function createProduct(ev: { preventDefault: () => void }) {
+  console.log({ _id })
+
+  async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
     const data = { title, description, price }
-    await axios.post('/api/products', data)
+
+    if (_id) {
+      //update
+      await axios.put('/api/products', { ...data, _id })
+    } else {
+      //create
+      await axios.post('/api/products', data)
+    }
     setGoToProducts(true)
   }
+
   if (goToProducts) {
     router.push('/products')
   }
 
   return (
-    <form onSubmit={createProduct}>
+    <form onSubmit={saveProduct}>
       <label htmlFor="product-name">
         Product name
         <input
