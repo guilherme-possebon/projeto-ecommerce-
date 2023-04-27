@@ -4,10 +4,10 @@ import Nav from '@/Components/Nav'
 import { ReactNode } from 'react'
 
 type LayoutProp = {
-    children: ReactNode
+  children: ReactNode
 }
 
-export default function Layout({children}: LayoutProp ) {
+export default function Layout({ children }: LayoutProp) {
   const { data: session } = useSession()
   if (!session) {
     return (
@@ -31,9 +31,12 @@ export default function Layout({children}: LayoutProp ) {
         <title>Nome da empresa</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="bg-blue-900 min-h-screen flex">
+
+      <div className="min-h-screen flex bg-blue-900">
         <Nav />
-        <div className="bg-white flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">{children}</div>
+        <div className="bg-white flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">
+          {children}
+        </div>
       </div>
     </>
   )
