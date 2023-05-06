@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 interface ExistingType {
   existingTitle?: object | string
@@ -45,6 +45,23 @@ export default function ProductForm({
     router.push('/products')
   }
 
+  async function uploadProductPhoto(ev: ChangeEvent<HTMLInputElement>) {
+    const imageFiles = ev.target.files ?? []
+
+    if (imageFiles?.length > 0) {
+      const data = new FormData()
+
+      Array.from(imageFiles).forEach((file: string | Blob) =>
+        data.append('file', file)
+      )
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: data
+      })
+      console.log(res)
+    }
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <label htmlFor="product-name">
@@ -60,7 +77,10 @@ export default function ProductForm({
       </label>
       <label htmlFor="Photo">Photos</label>
       <div className="mb-2">
-        <label className="w-24 h-24 border text-center flex flex-col items-center justify-center text-gray-500 gap-1 text-sm rounded-lg bg-gray-300 cursor-pointer">
+        {!images && <div>Add an image</div>}
+        <label
+          className="add-image-btn"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -76,9 +96,14 @@ export default function ProductForm({
             />
           </svg>
           Upload
-          <input type="file" name="image-file" id="image-file" className='hidden' />
+          <input
+            type="file"
+            name="image-file"
+            id="image-file"
+            className="hidden"
+            onChange={uploadProductPhoto}
+          />
         </label>
-        {!images && <div>No photos in this produtcs</div>}
       </div>
       <label htmlFor="description">
         Description
