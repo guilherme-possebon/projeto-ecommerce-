@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '../../services/firebase'
 
@@ -26,16 +26,16 @@ export default function ProductForm({
   price: existingPrice,
   url: existingUrl
 }: ExistingType) {
-  
   // ------------------Produto------------------
   const [title, setTitle] = useState(existingTitle)
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)
   const [goToProducts, setGoToProducts] = useState(false)
   const [url, seturl] = useState(existingUrl)
+  const [productUrl, setProductUrl] = useState<string>('')
 
   const urlwoh = url?.split('https://').pop()
-  console.log( urlwoh, 1 )
+  console.log(urlwoh, 1)
 
   const router = useRouter()
 
@@ -115,6 +115,18 @@ export default function ProductForm({
     }
   }
 
+  const { id } = router.query
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+    axios.get('/api/products?id=' + id).then((response) => {
+      const { urlwoh } = response.data
+      setProductUrl(urlwoh)
+    })
+  }, [id])
+
   return (
     <form onSubmit={saveProduct}>
       <label htmlFor="product-name">
@@ -130,7 +142,14 @@ export default function ProductForm({
       </label>
       <label htmlFor="Photo">Photos</label>
       <div className="mb-2">
-        <label className="add-image-btn">
+        {productUrl?.length > 0 ? 
+         (
+          <div>
+            <img src={`https://${productUrl}`} alt="" className='w-96' />
+          </div>
+        )
+         : 
+        (<label className="add-image-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -153,8 +172,9 @@ export default function ProductForm({
             className="hidden"
             onChange={addProductPhoto}
           />
-        </label>
-        <div>{url}</div>
+        </label>)
+        }
+        <a href={`https://${productUrl}`} target='_blank'>Link da imagem</a>
       </div>
       <label htmlFor="description">
         Description
