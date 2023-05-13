@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useState } from 'react'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { storage } from '../../services/firebase'
 
 interface ExistingType {
   existingTitle?: object | string
@@ -11,6 +13,10 @@ interface ExistingType {
   price?: string
   _id?: string
   images?: File
+  url?: string
+}
+interface ImageFile extends File {
+  name: string
 }
 
 export default function ProductForm({
@@ -18,25 +24,33 @@ export default function ProductForm({
   title: existingTitle,
   description: existingDescription,
   price: existingPrice,
-  images
+  url: existingUrl
 }: ExistingType) {
+  
+  // ------------------Produto------------------
   const [title, setTitle] = useState(existingTitle)
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)
   const [goToProducts, setGoToProducts] = useState(false)
+  const [url, seturl] = useState(existingUrl)
+
+  const urlwoh = url?.split('https://').pop()
+  console.log( urlwoh, 1 )
 
   const router = useRouter()
 
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
-    const data = { title, description, price }
+    const data = { title, description, price, urlwoh }
 
     if (_id) {
       //update
       await axios.put('/api/products', { ...data, _id })
+      console.log(data, 'update')
     } else {
       //create
       await axios.post('/api/products', data)
+      console.log(data, 'create')
     }
     setGoToProducts(true)
   }
@@ -45,20 +59,59 @@ export default function ProductForm({
     router.push('/products')
   }
 
-  async function uploadProductPhoto(ev: ChangeEvent<HTMLInputElement>) {
-    const imageFiles = ev.target.files ?? []
+  // ------------------Imagem------------------
+  const [file, setFile] = useState<ImageFile | undefined>()
+  const [progress, setProgress] = useState<number>(0)
 
-    if (imageFiles?.length > 0) {
-      const data = new FormData()
+  const metadata = {
+    contentType: 'image/jpeg'
+  }
 
-      Array.from(imageFiles).forEach((file: string | Blob) =>
-        data.append('file', file)
+  function addProductPhoto(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files && event.target.files.length > 0) {
+      const selectedFile = event.target.files[0]
+      setFile(selectedFile)
+
+      const storageRef = ref(storage, 'images/' + selectedFile.name)
+      const uploadTask = uploadBytesResumable(
+        storageRef,
+        selectedFile,
+        metadata
       )
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: data
-      })
-      console.log(res)
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + progress + '% done')
+          setProgress(progress)
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            case 'running':
+              console.log('Upload is running')
+              break
+          }
+        },
+        (error) => {
+          switch (error.code) {
+            case 'storage/unauthorized':
+              break
+            case 'storage/canceled':
+              break
+            case 'storage/unknown':
+              break
+          }
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL)
+            seturl(downloadURL)
+          })
+        }
+      )
     }
   }
 
@@ -77,10 +130,7 @@ export default function ProductForm({
       </label>
       <label htmlFor="Photo">Photos</label>
       <div className="mb-2">
-        {!images && <div>Add an image</div>}
-        <label
-          className="add-image-btn"
-        >
+        <label className="add-image-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -101,9 +151,10 @@ export default function ProductForm({
             name="image-file"
             id="image-file"
             className="hidden"
-            onChange={uploadProductPhoto}
+            onChange={addProductPhoto}
           />
         </label>
+        <div>{url}</div>
       </div>
       <label htmlFor="description">
         Description

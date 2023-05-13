@@ -11,6 +11,7 @@ export default async function handle(
   await mongooseConnect()
 
   if (method === 'GET') {
+    // verifica o id do produto
     if (req.query?.id) {
       res.json(await Product.findOne({ _id: req.query.id }))
     } else {
@@ -18,21 +19,40 @@ export default async function handle(
     }
   }
 
-  if (method === 'POST') {
-    const { title, description, price }: ProductInterface = req.body
-    const productDoc = await Product.create({
+  if (method === 'POST') { // Possibilita a cração do produto
+    const { title, description, price, urlwoh }: ProductInterface =
+      req.body
+    try {
+      const productDoc = await Product.create({
+        title,
+        description,
+        price,
+        urlwoh
+      })
+      res.json(productDoc)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Failed to create product' })
+    }
+  }
+
+  if (method === 'PUT') {
+    // possibilita a edição do produto
+    const {
       title,
       description,
-      price
-    })
-    res.json(productDoc)
-  }
-  if (method === 'PUT') {
-    const { title, description, price, _id }: ProductInterface = req.body
-    await Product.updateOne({ _id }, { title, description, price })
+      price,
+      _id,
+      urlwoh
+    }: ProductInterface = req.body
+    await Product.updateOne(
+      { _id },
+      { title, description, price, urlwoh }
+    )
     res.json(true)
   }
   if (method === 'DELETE') {
+    // Deleta o produto
     if (req.query?.id) {
       await Product.deleteOne({ _id: req.query?.id })
       res.json(true)

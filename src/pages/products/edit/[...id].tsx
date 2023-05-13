@@ -18,11 +18,14 @@ export default function EditProductPage() {
     })
   }, [id])
 
-
   return (
     <Layout>
       <h1>Edit product</h1>
-      {Object.keys(productInfo).length > 0 ? <ProductForm {...productInfo} /> : <div>Carregando edição do produto...</div>}
+      {Object.keys(productInfo).length > 0 ? (
+        <ProductForm {...productInfo} />
+      ) : (
+        <div>Carregando edição do produto...</div>
+      )}
     </Layout>
   )
 }
