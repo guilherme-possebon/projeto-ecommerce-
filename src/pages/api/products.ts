@@ -20,14 +20,14 @@ export default async function handle(
   }
 
   if (method === 'POST') { // Possibilita a cração do produto
-    const { title, description, price, productUrl }: ProductInterface =
+    const { title, description, price, producturl }: ProductInterface =
       req.body
     try {
       const productDoc = await Product.create({
         title,
         description,
         price,
-        productUrl
+        producturl
       })
       res.json(productDoc)
     } catch (error) {
@@ -43,11 +43,11 @@ export default async function handle(
       description,
       price,
       _id,
-      productUrl
+      producturl
     }: ProductInterface = req.body
     await Product.updateOne(
       { _id },
-      { title, description, price, productUrl }
+      { title, description, price, producturl }
     )
     res.json(true)
   }

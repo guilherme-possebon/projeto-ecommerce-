@@ -30,14 +30,14 @@ export default function ProductForm({
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)
   const [url, seturl] = useState<string>('')
-  const [productUrl, setProductUrl] = useState<string>('')
+  const [producturl, setProductUrl] = useState<string>('')
   const [goToProducts, setGoToProducts] = useState(false)
 
   const router = useRouter()
 
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
-    const data = { title, description, price, productUrl }
+    const data = { title, description, price, producturl }
 
     if (_id) {
       //update
@@ -117,8 +117,8 @@ export default function ProductForm({
       return
     }
     axios.get('/api/products?id=' + id).then((response) => {
-      const { productUrl } = response.data
-      setProductUrl(productUrl)
+      const { producturl } = response.data
+      setProductUrl(producturl)
     })
   }, [id])
 
@@ -137,7 +137,7 @@ export default function ProductForm({
       </label>
       <label htmlFor="Photo">Photos</label>
       <div className="mb-2">
-        {productUrl?.length === 0 ? (
+        {producturl?.length === 0 ? (
           <>
             <div>{progress > 0 ? `Upload ${progress.toFixed()}% concluido ` : 'Fazer upload da imagem:'}</div>
             <label className="add-image-btn">
@@ -168,9 +168,9 @@ export default function ProductForm({
         ) : (
           <>
             <div>
-              <img src={productUrl} alt="" className="w-96" loading='lazy' />
+              <img src={producturl} alt="" className="w-96" loading='lazy' />
             </div>
-            <a href={productUrl} target="_blank">
+            <a href={producturl} target="_blank">
               Link da imagem
             </a>
           </>
