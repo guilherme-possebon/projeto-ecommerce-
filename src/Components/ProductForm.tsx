@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { storage } from '../../services/firebase'
 
-interface ExistingType {
+export interface ExistingType {
   existingTitle?: object | string
   title?: string
   existingDescription?: object | string
@@ -15,7 +15,7 @@ interface ExistingType {
   images?: File
   url?: string
 }
-interface ImageFile extends File {
+export interface ImageFile extends File {
   name: string
 }
 
@@ -24,24 +24,20 @@ export default function ProductForm({
   title: existingTitle,
   description: existingDescription,
   price: existingPrice,
-  url: existingUrl
 }: ExistingType) {
   // ------------------Produto------------------
   const [title, setTitle] = useState(existingTitle)
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)
-  const [goToProducts, setGoToProducts] = useState(false)
-  const [url, seturl] = useState(existingUrl)
+  const [url, seturl] = useState<string>('')
   const [productUrl, setProductUrl] = useState<string>('')
-
-  const urlwoh = url?.split('https://').pop()
-  console.log(urlwoh, 1)
+  const [goToProducts, setGoToProducts] = useState(false)
 
   const router = useRouter()
 
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
-    const data = { title, description, price, urlwoh }
+    const data = { title, description, price, productUrl }
 
     if (_id) {
       //update
@@ -72,7 +68,7 @@ export default function ProductForm({
       const selectedFile = event.target.files[0]
       setFile(selectedFile)
 
-      const storageRef = ref(storage, 'images/' + selectedFile.name)
+      const storageRef = ref(storage, selectedFile.name)
       const uploadTask = uploadBytesResumable(
         storageRef,
         selectedFile,
@@ -84,7 +80,6 @@ export default function ProductForm({
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
           setProgress(progress)
           switch (snapshot.state) {
             case 'paused':
@@ -108,7 +103,7 @@ export default function ProductForm({
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL)
-            seturl(downloadURL)
+            setProductUrl(downloadURL)
           })
         }
       )
@@ -122,8 +117,8 @@ export default function ProductForm({
       return
     }
     axios.get('/api/products?id=' + id).then((response) => {
-      const { urlwoh } = response.data
-      setProductUrl(urlwoh)
+      const { productUrl } = response.data
+      setProductUrl(productUrl)
     })
   }, [id])
 
@@ -142,39 +137,44 @@ export default function ProductForm({
       </label>
       <label htmlFor="Photo">Photos</label>
       <div className="mb-2">
-        {productUrl?.length > 0 ? 
-         (
-          <div>
-            <img src={`https://${productUrl}`} alt="" className='w-96' />
-          </div>
-        )
-         : 
-        (<label className="add-image-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-            />
-          </svg>
-          Upload
-          <input
-            type="file"
-            name="image-file"
-            id="image-file"
-            className="hidden"
-            onChange={addProductPhoto}
-          />
-        </label>)
-        }
-        <a href={`https://${productUrl}`} target='_blank'>Link da imagem</a>
+        {productUrl?.length === 0 ? (
+          <>
+            <div>{progress > 0 ? `Upload ${progress.toFixed()}% concluido ` : 'Fazer upload da imagem:'}</div>
+            <label className="add-image-btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                />
+              </svg>
+              Upload
+              <input
+                type="file"
+                name="image-file"
+                id="image-file"
+                className="hidden"
+                onChange={addProductPhoto}
+              />
+            </label>
+          </>
+        ) : (
+          <>
+            <div>
+              <img src={productUrl} alt="" className="w-96" loading='lazy' />
+            </div>
+            <a href={productUrl} target="_blank">
+              Link da imagem
+            </a>
+          </>
+        )}
       </div>
       <label htmlFor="description">
         Description
