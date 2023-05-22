@@ -23,13 +23,12 @@ export default function ProductForm({
   _id,
   title: existingTitle,
   description: existingDescription,
-  price: existingPrice,
+  price: existingPrice
 }: ExistingType) {
   // ------------------Produto------------------
   const [title, setTitle] = useState(existingTitle)
   const [description, setDescription] = useState(existingDescription)
   const [price, setPrice] = useState(existingPrice)
-  const [url, seturl] = useState<string>('')
   const [producturl, setProductUrl] = useState<string>('')
   const [goToProducts, setGoToProducts] = useState(false)
 
@@ -46,7 +45,6 @@ export default function ProductForm({
     } else {
       //create
       await axios.post('/api/products', data)
-      console.log(data, 'create')
     }
     setGoToProducts(true)
   }
@@ -139,7 +137,11 @@ export default function ProductForm({
       <div className="mb-2">
         {producturl?.length === 0 ? (
           <>
-            <div>{progress > 0 ? `Upload ${progress.toFixed()}% concluido ` : 'Fazer upload da imagem:'}</div>
+            <div>
+              {progress > 0
+                ? `Upload ${progress.toFixed()}% concluido`
+                : 'Fazer upload da imagem:'}
+            </div>
             <label className="add-image-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -166,14 +168,24 @@ export default function ProductForm({
             </label>
           </>
         ) : (
-          <>
+          <div className="image-infos">
             <div>
-              <img src={producturl} alt="" className="w-96" loading='lazy' />
+              <img src={producturl} alt="" className="w-96" loading="lazy" />
             </div>
             <a href={producturl} target="_blank">
               Link da imagem
             </a>
-          </>
+            <label>
+              Trocar Imagem
+              <input
+                type="file"
+                name="image-file"
+                id="image-file"
+                onChange={addProductPhoto}
+                className="hidden"
+              />
+            </label>
+          </div>
         )}
       </div>
       <label htmlFor="description">
