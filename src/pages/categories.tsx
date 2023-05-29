@@ -1,12 +1,12 @@
 import Layout from '@/Components/Layout'
 import axios from 'axios'
-import { SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CategoryInterface } from '../../models/Category'
 
 export default function CategoriesPage() {
-  const [editedCategory, setEditedCategory] = useState<
-    SetStateAction<null> | CategoryInterface
-  >(null)
+  const [editedCategory, setEditedCategory] =
+    useState<CategoryInterface | null>(null)
+
   const [name, setName] = useState('')
   const [parentCategory, setParentCategory] = useState('')
   const [categories, setCategories] = useState<CategoryInterface[]>([])
@@ -27,21 +27,16 @@ export default function CategoriesPage() {
     let data = {}
 
     if (parentCategory.length == 0) {
-      console.log('igual a 0')
       data = { name }
     } else {
-      console.log('aaaa')
       data = { name, parentCategory }
     }
 
     if (editedCategory) {
-      await axios.put('/api/categories', data)
+      await axios.put('/api/categories', { ...data, _id: editedCategory._id })
+      setEditedCategory(null)
     } else {
-      if (parentCategory.length > 0) {
-        await axios.post('/api/categories', data)
-      } else {
-        await axios.post('/api/categories', data)
-      }
+      await axios.post('/api/categories', data)
     }
     setName('')
     setParentCategory('')

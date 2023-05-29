@@ -19,12 +19,15 @@ export default async function handle(
     const categoryDoc = await Category.create({ name, parent: parentCategory })
     res.json(categoryDoc)
   }
-
-  if (method === 'DELETE') {
-    // Deleta o produto
-    if (req.query?.id) {
-      await Category.deleteOne({ _id: req.query?.id })
-      res.json(true)
-    }
+  if (method === 'PUT') {
+    const { name, parentCategory, _id }: CategoryInterface = req.body
+    const categoryDoc = await Category.updateOne(
+      { _id },
+      {
+        name,
+        parent: parentCategory
+      }
+    )
+    res.json(categoryDoc)
   }
 }
