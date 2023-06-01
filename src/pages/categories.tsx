@@ -2,8 +2,9 @@ import Layout from '@/Components/Layout'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { CategoryInterface } from '../../models/Category'
+// import Swal from 'sweetalert2'
 
-export default function CategoriesPage() {
+function Categories() {
   const [editedCategory, setEditedCategory] =
     useState<CategoryInterface | null>(null)
 
@@ -113,3 +114,5 @@ export default function CategoriesPage() {
     </Layout>
   )
 }
+
+// export default withSwal(({ swal }, ref) => <Categories />)
