@@ -1,48 +1,58 @@
 import Layout from '@/Components/Layout'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 import { CategoryInterface } from '../../models/Category'
-// import Swal from 'sweetalert2'
 
-function Categories() {
-  const [editedCategory, setEditedCategory] =
-    useState<CategoryInterface | null>(null)
-
+export default function Categories() {
   const [name, setName] = useState('')
   const [parentCategory, setParentCategory] = useState('')
   const [categories, setCategories] = useState<CategoryInterface[]>([])
+  const [editedCategory, setEditedCategory] =
+    useState<CategoryInterface | null>(null)
 
   useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  function fetchCategories() {
     axios.get('/api/categories').then((result) => {
       setCategories(result.data)
     })
-  })
+  }
 
+  // Salvar a categoria
   async function saveCategory(ev: { preventDefault: () => void }) {
     ev.preventDefault()
 
     if (name.length == 0) {
-      alert('Nome invalido')
+      // verifica se tem algo escrito no nome da categoria
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Nome invalido'
+      })
       return
     }
     let data = {}
 
     if (parentCategory.length == 0) {
-      data = { name }
+      // verifica se tem alguma categoria sendo pai dessa nova categoria
+      data = { name } // se não tiver, vai mandar só o nome
     } else {
-      data = { name, parentCategory }
+      data = { name, parentCategory } // se tiver vai enviar o nome da categoria criada junto com o pai dessa categoria
     }
 
     if (editedCategory) {
-      await axios.put('/api/categories', { ...data, _id: editedCategory._id })
+      await axios.put('/api/categories', { ...data, _id: editedCategory._id }) // se caso a categoria foi editada, ela será enviada ao banco de dados
       setEditedCategory(null)
     } else {
-      await axios.post('/api/categories', data)
+      await axios.post('/api/categories', data) // se não, só vai criar a categoria
     }
     setName('')
     setParentCategory('')
   }
-
+  // editar a categoria
   function editCategory(category: CategoryInterface) {
     setEditedCategory(category)
     setName(category.name)
@@ -51,6 +61,45 @@ function Categories() {
     } else {
       setParentCategory('')
     }
+  }
+
+  function deleteCategory(category: CategoryInterface) {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        cancelButton: 'button-danger',
+        confirmButton: 'button-success'
+      },
+      buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Você tem certeza?',
+        text: `Você ira deletar a categoria ${category.name}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, deletar!',
+        cancelButtonText: 'Não, cancelar!',
+        reverseButtons: true
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          const { _id }: CategoryInterface = category
+          await axios.delete('/api/categories?_id=' + _id)
+          fetchCategories()
+          swalWithBootstrapButtons.fire(
+            'Deletado!',
+            'Categoria deletada com sucesso.',
+            'success'
+          )
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+            'Cancelado',
+            'Sua categora está salva :)',
+            'error'
+          )
+        }
+      })
   }
 
   return (
@@ -105,7 +154,12 @@ function Categories() {
                   >
                     Edit
                   </button>
-                  <button className="btn-primary">Delete</button>
+                  <button
+                    className="btn-primary"
+                    onClick={() => deleteCategory(category)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -114,5 +168,3 @@ function Categories() {
     </Layout>
   )
 }
-
-// export default withSwal(({ swal }, ref) => <Categories />)
