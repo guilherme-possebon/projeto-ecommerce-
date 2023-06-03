@@ -20,7 +20,7 @@ export default function EditProductPage() {
 
   return (
     <Layout>
-      <h1>Edit product</h1>
+      <h1>Editar produto</h1>
       {Object.keys(productInfo).length > 0 ? (
         <ProductForm {...productInfo} />
       ) : (
