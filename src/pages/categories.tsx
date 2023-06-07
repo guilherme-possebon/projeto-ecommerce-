@@ -24,7 +24,6 @@ export default function Categories() {
     })
   }
 
-  // Salvar a categoria
   async function saveCategory(ev: { preventDefault: () => void }) {
     ev.preventDefault()
 
@@ -56,7 +55,7 @@ export default function Categories() {
     setParentCategory('')
     fetchCategories()
   }
-  // Editar a categoria
+
   function editCategory(category: CategoryInterface) {
     setEditedCategory(category)
     setName(category.name)
@@ -66,7 +65,7 @@ export default function Categories() {
       setParentCategory('')
     }
   }
-  // Deletar categoria
+
   function deleteCategory(category: CategoryInterface) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -105,17 +104,35 @@ export default function Categories() {
         }
       })
   }
-  // Adicionar propriedade
+
   function addPropertie() {
     setProperties((prev) => {
       return [...prev, { name: '', value: '' }]
     })
   }
-  // Mudar o nome da propriedade
+
   function handlePropertyNameChange(
+    index: number,
     property: { name: string; value: string },
-    ev: string
-  ) {}
+    newName: string
+  ) {
+    setProperties((prev) => {
+      const updatedProperties = [...prev]
+      updatedProperties[index].name = newName
+      return updatedProperties
+    })
+  }
+  function handlePropertyValueChange(
+    index: number,
+    property: { name: string; value: string },
+    newValues: string
+  ) {
+    setProperties((prev) => {
+      const updatedProperties = [...prev]
+      updatedProperties[index].value = newValues
+      return updatedProperties
+    })
+  }
 
   return (
     <Layout>
@@ -154,19 +171,22 @@ export default function Categories() {
             Adicionar nova propriedade
           </button>
           {properties.length > 0 &&
-            properties.map((property) => (
+            properties.map((property, index) => (
               <div className="flex gap-1 mt-1">
                 <input
                   type="text"
                   value={property.name}
                   onChange={(ev) =>
-                    handlePropertyNameChange(property, ev.target.value)
+                    handlePropertyNameChange(index, property, ev.target.value)
                   }
                   placeholder="Nome da propriedade (exemplo: cor)"
                 />
                 <input
                   type="text"
                   value={property.value}
+                  onChange={(ev) =>
+                    handlePropertyValueChange(index, property, ev.target.value)
+                  }
                   placeholder="Valores, separados por virgulas"
                 />
               </div>
