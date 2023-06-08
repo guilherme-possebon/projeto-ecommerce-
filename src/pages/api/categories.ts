@@ -15,17 +15,23 @@ export default async function handle(
 
   if (method === 'POST') {
     // Create
-    const { name, parentCategory }: CategoryInterface = req.body
-    const categoryDoc = await Category.create({ name, parent: parentCategory })
+    const { name, parentCategory, properties }: CategoryInterface = req.body
+    const categoryDoc = await Category.create({
+      name,
+      parent: parentCategory,
+      properties
+    })
     res.json(categoryDoc)
   }
   if (method === 'PUT') {
-    const { name, parentCategory, _id }: CategoryInterface = req.body
+    const { name, parentCategory, properties, _id }: CategoryInterface =
+      req.body
     const categoryDoc = await Category.updateOne(
       { _id },
       {
         name,
-        parent: parentCategory
+        parent: parentCategory,
+        properties
       }
     )
     res.json(categoryDoc)

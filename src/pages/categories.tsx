@@ -28,7 +28,6 @@ export default function Categories() {
     ev.preventDefault()
 
     if (name.length == 0) {
-      // verifica se tem algo escrito no nome da categoria
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -39,17 +38,16 @@ export default function Categories() {
     let data = {}
 
     if (parentCategory.length == 0) {
-      // verifica se tem alguma categoria sendo pai dessa nova categoria
-      data = { name } // se não tiver, vai mandar só o nome
+      data = { name }
     } else {
-      data = { name, parentCategory } // se tiver vai enviar o nome da categoria criada junto com o pai dessa categoria
+      data = { name, parentCategory }
     }
 
     if (editedCategory) {
-      await axios.put('/api/categories', { ...data, _id: editedCategory._id }) // se caso a categoria foi editada, ela será enviada ao banco de dados
+      await axios.put('/api/categories', { ...data, _id: editedCategory._id })
       setEditedCategory(null)
     } else {
-      await axios.post('/api/categories', data) // se não, só vai criar a categoria
+      await axios.post('/api/categories', data)
     }
     setName('')
     setParentCategory('')
@@ -122,6 +120,7 @@ export default function Categories() {
       return updatedProperties
     })
   }
+
   function handlePropertyValueChange(
     index: number,
     property: { name: string; value: string },
@@ -131,6 +130,14 @@ export default function Categories() {
       const updatedProperties = [...prev]
       updatedProperties[index].value = newValues
       return updatedProperties
+    })
+  }
+
+  function removeProperty(indexToRemove: number) {
+    setProperties((prev) => {
+      return [...prev].filter((p, pIndex) => {
+        return pIndex !== indexToRemove
+      })
     })
   }
 
@@ -154,7 +161,7 @@ export default function Categories() {
             onChange={(ev) => setParentCategory(ev.target.value)}
             value={parentCategory}
           >
-            <option>No parent category</option>
+            <option>Sem categoria</option>
             {categories.length > 0 &&
               categories.map((category) => (
                 <option value={category._id}>{category.name}</option>
@@ -172,9 +179,10 @@ export default function Categories() {
           </button>
           {properties.length > 0 &&
             properties.map((property, index) => (
-              <div className="flex gap-1 mt-1">
+              <div className="flex gap-1 my-2">
                 <input
                   type="text"
+                  className="mb-0"
                   value={property.name}
                   onChange={(ev) =>
                     handlePropertyNameChange(index, property, ev.target.value)
@@ -183,51 +191,78 @@ export default function Categories() {
                 />
                 <input
                   type="text"
+                  className="mb-0"
                   value={property.value}
                   onChange={(ev) =>
                     handlePropertyValueChange(index, property, ev.target.value)
                   }
                   placeholder="Valores, separados por virgulas"
                 />
+                <button
+                  type="button"
+                  onClick={() => removeProperty(index)}
+                  className="btn-default"
+                >
+                  Remover
+                </button>
               </div>
             ))}
         </div>
-        <button type="submit" className="btn-primary py-1">
-          Save
-        </button>
+        <div className="flex gap-1">
+          {editedCategory && (
+            <button
+              type="button"
+              className="btn-default"
+              onClick={() => {
+                setEditedCategory(null)
+                setName('')
+                setParentCategory('')
+              }}
+            >
+              Cancelar
+            </button>
+          )}
+          <button type="submit" className="btn-primary py-1">
+            Salvar
+          </button>
+        </div>
       </form>
-      <table className="basic mt-4">
-        <thead>
-          <tr>
-            <td>Category name</td>
-            <td>Parent category</td>
-            <td></td>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <tr>
-                <td>{category.name}</td>
-                <td>{category?.parent?.name}</td>
-                <td>
-                  <button
-                    className="btn-primary mr-1"
-                    onClick={() => editCategory(category)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-primary"
-                    onClick={() => deleteCategory(category)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {!editedCategory && (
+        <table className="basic mt-4">
+          <thead>
+            <tr>
+              <td>Nome da categoria</td>
+              <td>Categoria pai</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <tr>
+                  <td>{category.name}</td>
+                  <td>{category?.parent?.name}</td>
+                  <td>
+                    <button
+                      className="btn-primary mr-1"
+                      type="button"
+                      onClick={() => editCategory(category)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn-primary"
+                      type="button"
+                      onClick={() => deleteCategory(category)}
+                    >
+                      Deletar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </Layout>
   )
 }

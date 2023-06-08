@@ -5,6 +5,7 @@ export interface CategoryInterface {
   _id: string
   parent: string & { name: string; _id: string }
   parentCategory: string
+  properties: string
 }
 
 const CategorySchema = new Schema({
