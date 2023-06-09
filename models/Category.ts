@@ -5,12 +5,13 @@ export interface CategoryInterface {
   _id: string
   parent: string & { name: string; _id: string }
   parentCategory: string
-  properties: string
+  properties: [{ type: Object }]
 }
 
 const CategorySchema = new Schema({
   name: { type: String, require: true },
-  parent: { type: mongoose.Types.ObjectId, ref: 'Category' }
+  parent: { type: mongoose.Types.ObjectId, ref: 'Category' },
+  properties: [{ type: Object }]
 })
 
 export const Category = models?.Category || model('Category', CategorySchema)

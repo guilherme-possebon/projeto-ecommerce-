@@ -35,12 +35,32 @@ export default function Categories() {
       })
       return
     }
+
     let data = {}
 
-    if (parentCategory.length == 0) {
-      data = { name }
-    } else {
-      data = { name, parentCategory }
+    switch (true) {
+      case parentCategory.length > 0 && properties.length > 0:
+        data = {
+          name,
+          parentCategory,
+          properties: properties.map((p) => ({
+            name: p.name,
+            value: p.value.split(',')
+          }))
+        }
+        break
+
+      case parentCategory.length > 0:
+        data = { name, parentCategory }
+        break
+
+      case properties.length > 0:
+        data = { name, properties }
+        break
+
+      default:
+        data = { name }
+        break
     }
 
     if (editedCategory) {
