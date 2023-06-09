@@ -129,6 +129,10 @@ export default function Categories() {
     })
   }
 
+  function clearProperties() {
+    setProperties([])
+  }
+
   function handlePropertyNameChange(
     index: number,
     property: { name: string; value: string },
@@ -167,13 +171,13 @@ export default function Categories() {
       <label>
         {editedCategory
           ? `Editing category ${editedCategory.name}`
-          : 'Create new category'}
+          : 'Criar nova categoria'}
       </label>
       <form onSubmit={saveCategory}>
         <div className="flex gap-1">
           <input
             type="text"
-            placeholder={'Category name'}
+            placeholder={'Nome da categoria'}
             onChange={(ev) => setName(ev.target.value)}
             value={name}
           />
@@ -190,13 +194,22 @@ export default function Categories() {
         </div>
         <div className="mb-2">
           <label className="block">Propriedades</label>
-          <button
-            type="button"
-            className="btn-default text-sm"
-            onClick={addPropertie}
-          >
-            Adicionar nova propriedade
-          </button>
+          <div className="flex justify-between">
+            <button
+              type="button"
+              className="btn-default text-sm"
+              onClick={addPropertie}
+            >
+              Adicionar nova propriedade
+            </button>
+            <button
+              type="button"
+              className="btn-default text-sm"
+              onClick={clearProperties}
+            >
+              Limpar todas propriedades
+            </button>
+          </div>
           {properties.length > 0 &&
             properties.map((property, index) => (
               <div className="flex gap-1 my-2">

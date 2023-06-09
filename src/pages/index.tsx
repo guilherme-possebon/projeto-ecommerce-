@@ -7,7 +7,9 @@ export default function Home() {
   return (
     <Layout>
       <div className="text-blue-900 flex">
-        <h2>Hello, <strong>{session?.user?.name}</strong></h2>
+        <h2>
+          Olá, <strong>{session?.user?.name}</strong>
+        </h2>
       </div>
     </Layout>
   )
