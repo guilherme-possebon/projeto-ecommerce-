@@ -139,7 +139,7 @@ export default function ProductForm({
           type="text"
           name="product-name"
           id="product-name"
-          placeholder="product name"
+          placeholder="Nome do produto"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -170,7 +170,7 @@ export default function ProductForm({
                 {progress > 0
                   ? `Upload ${progress.toFixed()}% concluido`
                   : 'Fazer upload da imagem:'}
-                <label className="add-image-btn">
+                <label>
                   <input
                     type="file"
                     name="image-file"
@@ -215,7 +215,7 @@ export default function ProductForm({
         <textarea
           name="description"
           id="description"
-          placeholder="description"
+          placeholder="Descrição"
           onChange={(e) => setDescription(e.target.value)}
           value={description}
         ></textarea>
@@ -227,7 +227,7 @@ export default function ProductForm({
           type="number"
           name="price"
           id="price"
-          placeholder="price"
+          placeholder="Preço"
           onChange={(e) => setPrice(e.target.value)}
           value={price}
         />
