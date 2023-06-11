@@ -124,11 +124,14 @@ export default function ProductForm({
         const { producturl } = response.data
         setProductUrl(producturl)
       })
-      axios.get('/api/categories').then((result) => {
-        setCategories(result.data)
-      })
     }
   }, [id])
+
+  useEffect(() => {
+    axios.get('/api/categories').then((result) => {
+      setCategories(result.data)
+    })
+  })
 
   return (
     <form onSubmit={saveProduct}>
