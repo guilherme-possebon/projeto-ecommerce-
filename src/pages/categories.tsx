@@ -36,14 +36,18 @@ export default function Categories() {
       return
     }
 
+    const propertiesFiltered = properties.filter((obj) => {
+      const values = Object.values(obj)
+      return values.some((value) => value.trim() !== '')
+    })
     let data = {}
 
     switch (true) {
-      case parentCategory.length > 0 && properties.length > 0:
+      case parentCategory.length > 0 && propertiesFiltered.length > 0:
         data = {
           name,
           parentCategory,
-          properties: properties.map((p) => ({
+          properties: propertiesFiltered.map((p) => ({
             name: p.name,
             value: p.value.split(',')
           }))
@@ -54,14 +58,21 @@ export default function Categories() {
         data = { name, parentCategory }
         break
 
-      case properties.length > 0:
-        data = { name, properties }
+      case propertiesFiltered.length > 0:
+        data = {
+          name,
+          properties: propertiesFiltered.map((p) => ({
+            name: p.name,
+            value: p.value.split(',')
+          }))
+        }
         break
 
       default:
         data = { name }
         break
     }
+    setProperties(propertiesFiltered)
 
     if (editedCategory) {
       await axios.put('/api/categories', { ...data, _id: editedCategory._id })
@@ -127,10 +138,6 @@ export default function Categories() {
     setProperties((prev) => {
       return [...prev, { name: '', value: '' }]
     })
-  }
-
-  function clearProperties() {
-    setProperties([])
   }
 
   function handlePropertyNameChange(
@@ -205,7 +212,7 @@ export default function Categories() {
             <button
               type="button"
               className="btn-default text-sm"
-              onClick={clearProperties}
+              onClick={() => setProperties([])}
             >
               Limpar propriedades
             </button>
@@ -327,9 +334,10 @@ export default function Categories() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
+
                       {/* SVG delete */}
                     </button>
                   </td>
