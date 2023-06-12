@@ -66,7 +66,6 @@ export default function Categories() {
     setEditedCategory(category)
     setName(category.name)
     setParentCategory(category.parent?._id)
-    console.log(category.properties)
     setProperties(
       category.properties.map(({ name, values }) => ({
         name,

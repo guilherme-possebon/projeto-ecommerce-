@@ -32,7 +32,7 @@ export default function Layout({ children }: LayoutProp) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="min-h-screen flex bg-blue-900">
+      <div className="min-h-screen flex bg-blue-900 w-screen">
         <Nav />
         <div className="bg-white flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">
           {children}

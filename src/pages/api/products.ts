@@ -25,7 +25,7 @@ export default async function handle(
       title,
       description,
       price,
-      producturl,
+      productUrls,
       category
     }: ProductInterface = req.body
     try {
@@ -33,7 +33,7 @@ export default async function handle(
         title,
         description,
         price,
-        producturl,
+        productUrls,
         category
       })
       res.json(productDoc)
@@ -50,12 +50,12 @@ export default async function handle(
       description,
       price,
       _id,
-      producturl,
+      productUrls,
       category
     }: ProductInterface = req.body
     await Product.updateOne(
       { _id },
-      { title, description, price, producturl, category }
+      { title, description, price, productUrls, category }
     )
     res.json(true)
   }

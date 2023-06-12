@@ -41,7 +41,7 @@ table.basic a {
 }
 
 .image-infos {
-    @apply flex flex-col
+    @apply flex gap-3
 }
 .image-infos label {
     @apply text-black cursor-pointer

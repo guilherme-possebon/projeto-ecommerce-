@@ -5,7 +5,7 @@ export interface ProductInterface {
   description: string
   price: number | string
   _id: string
-  producturl: string // TODO fazer como se fosse uma array
+  productUrls: string[]
   category: string
 }
 
@@ -13,7 +13,7 @@ const ProductShema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  producturl: { type: String, required: false },
+  productUrls: { type: Array, required: false },
   category: { type: mongoose.Types.ObjectId, ref: 'Category', required: false }
 })
 
