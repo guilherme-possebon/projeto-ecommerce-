@@ -38,7 +38,7 @@ export default async function handle(
       })
       res.json(productDoc)
     } catch (error) {
-      console.log(error)
+      if (error) throw error
       res.status(500).json({ error: 'Failed to create product' })
     }
   }
