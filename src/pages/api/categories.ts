@@ -18,7 +18,7 @@ export default async function handle(
     const { name, parentCategory, properties }: CategoryInterface = req.body
     const categoryDoc = await Category.create({
       name,
-      parent: parentCategory,
+      parent: parentCategory || undefined,
       properties
     })
     res.json(categoryDoc)
@@ -30,7 +30,7 @@ export default async function handle(
       { _id },
       {
         name,
-        parent: parentCategory,
+        parent: parentCategory || undefined,
         properties
       }
     )

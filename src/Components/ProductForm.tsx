@@ -180,7 +180,12 @@ export default function ProductForm({
             <>
               {/* -----------------------------------------------Fotos infos----------------------------------------------- */}
               <div className="image-infos">
-                <img src={producturl} alt="" className="w-96" loading="lazy" />
+                <img
+                  src={producturl}
+                  alt=""
+                  className="w-min h-min"
+                  loading="lazy"
+                />
 
                 <div className="flex gap-4">
                   <a href={producturl} target="_blank">

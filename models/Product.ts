@@ -5,7 +5,7 @@ export interface ProductInterface {
   description: string
   price: number | string
   _id: string
-  producturl: string
+  producturl: string // TODO fazer como se fosse uma array
   category: string
 }
 

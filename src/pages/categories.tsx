@@ -11,7 +11,7 @@ export default function Categories() {
   const [editedCategory, setEditedCategory] =
     useState<CategoryInterface | null>(null)
   const [properties, setProperties] = useState<
-    { name: string; value: string }[]
+    { name: string; values: string }[]
   >([])
 
   useEffect(() => {
@@ -40,39 +40,15 @@ export default function Categories() {
       const values = Object.values(obj)
       return values.some((value) => value.trim() !== '')
     })
-    let data = {}
 
-    switch (true) {
-      case parentCategory.length > 0 && propertiesFiltered.length > 0:
-        data = {
-          name,
-          parentCategory,
-          properties: propertiesFiltered.map((p) => ({
-            name: p.name,
-            value: p.value.split(',')
-          }))
-        }
-        break
-
-      case parentCategory.length > 0:
-        data = { name, parentCategory }
-        break
-
-      case propertiesFiltered.length > 0:
-        data = {
-          name,
-          properties: propertiesFiltered.map((p) => ({
-            name: p.name,
-            value: p.value.split(',')
-          }))
-        }
-        break
-
-      default:
-        data = { name }
-        break
+    let data = {
+      name,
+      parentCategory,
+      properties: propertiesFiltered.map((p) => ({
+        name: p.name,
+        values: p.values.split(',')
+      }))
     }
-    setProperties(propertiesFiltered)
 
     if (editedCategory) {
       await axios.put('/api/categories', { ...data, _id: editedCategory._id })
@@ -82,17 +58,21 @@ export default function Categories() {
     }
     setName('')
     setParentCategory('')
+    setProperties([])
     fetchCategories()
   }
 
   function editCategory(category: CategoryInterface) {
     setEditedCategory(category)
     setName(category.name)
-    if (category.parent?._id != undefined) {
-      setParentCategory(category.parent?._id)
-    } else {
-      setParentCategory('')
-    }
+    setParentCategory(category.parent?._id)
+    console.log(category.properties)
+    setProperties(
+      category.properties.map(({ name, values }) => ({
+        name,
+        values: Array.isArray(values) ? values.join(',') : values
+      }))
+    )
   }
 
   function deleteCategory(category: CategoryInterface) {
@@ -136,13 +116,13 @@ export default function Categories() {
 
   function addPropertie() {
     setProperties((prev) => {
-      return [...prev, { name: '', value: '' }]
+      return [...prev, { name: '', values: '' }]
     })
   }
 
   function handlePropertyNameChange(
     index: number,
-    property: { name: string; value: string },
+    property: { name: string; values: string },
     newName: string
   ) {
     setProperties((prev) => {
@@ -154,12 +134,12 @@ export default function Categories() {
 
   function handlePropertyValueChange(
     index: number,
-    property: { name: string; value: string },
+    property: { name: string; values: string },
     newValues: string
   ) {
     setProperties((prev) => {
       const updatedProperties = [...prev]
-      updatedProperties[index].value = newValues
+      updatedProperties[index].values = newValues
       return updatedProperties
     })
   }
@@ -200,7 +180,9 @@ export default function Categories() {
           </select>
         </div>
         <div className="mb-2">
-          <label className="block">Propriedades</label>
+          <label className="block">
+            {editedCategory ? 'Editando propriedades' : 'Propriedades'}
+          </label>
           <div className="flex gap-2">
             <button
               type="button"
@@ -217,7 +199,7 @@ export default function Categories() {
               Limpar propriedades
             </button>
           </div>
-          {properties.length > 0 &&
+          {properties?.length > 0 ? (
             properties.map((property, index) => (
               <div className="flex gap-1 my-2">
                 <input
@@ -232,7 +214,7 @@ export default function Categories() {
                 <input
                   type="text"
                   className="mb-0"
-                  value={property.value}
+                  value={property.values}
                   onChange={(ev) =>
                     handlePropertyValueChange(index, property, ev.target.value)
                   }
@@ -260,7 +242,10 @@ export default function Categories() {
                   {/* SVG remove */}
                 </button>
               </div>
-            ))}
+            ))
+          ) : (
+            <></>
+          )}
         </div>
         <div className="flex gap-1">
           <button type="submit" className="btn-primary">
@@ -274,6 +259,7 @@ export default function Categories() {
                 setEditedCategory(null)
                 setName('')
                 setParentCategory('')
+                setProperties([])
               }}
             >
               Cancelar
