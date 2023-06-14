@@ -34,7 +34,7 @@ export default function DeleteProductPage() {
       </h1>
 
       <div className="flex gap-2 justify-center">
-        <button onClick={deleteProduct} className="btn-red">
+        <button onClick={deleteProduct} autoFocus className="btn-red">
           Sim
         </button>
         <button onClick={goBack} className="btn-default">
