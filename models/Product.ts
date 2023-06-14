@@ -6,7 +6,8 @@ export interface ProductInterface {
   price: number | string
   _id: string
   productUrls: string[]
-  category: string
+  selectedCategory: string
+  productProperties: object
 }
 
 const ProductShema = new Schema({
@@ -14,7 +15,8 @@ const ProductShema = new Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   productUrls: { type: Array, required: false },
-  category: { type: mongoose.Types.ObjectId, ref: 'Category', required: false }
+  category: { type: mongoose.Types.ObjectId, ref: 'Category', required: false },
+  productProperties: { type: Object }
 })
 
 export const Product = models.Product || model('Product', ProductShema)

@@ -26,7 +26,8 @@ export default async function handle(
       description,
       price,
       productUrls,
-      category
+      selectedCategory,
+      productProperties
     }: ProductInterface = req.body
     try {
       const productDoc = await Product.create({
@@ -34,7 +35,8 @@ export default async function handle(
         description,
         price,
         productUrls,
-        category
+        category: selectedCategory || undefined,
+        productProperties
       })
       res.json(productDoc)
     } catch (error) {
@@ -51,11 +53,19 @@ export default async function handle(
       price,
       _id,
       productUrls,
-      category
+      selectedCategory,
+      productProperties
     }: ProductInterface = req.body
     await Product.updateOne(
       { _id },
-      { title, description, price, productUrls, category }
+      {
+        title,
+        description,
+        price,
+        productUrls,
+        category: selectedCategory || undefined,
+        productProperties
+      }
     )
     res.json(true)
   }
