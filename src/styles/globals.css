@@ -61,3 +61,45 @@ table.basic a {
         @apply mb-1
     }
 }
+
+.theme-switcher-label {
+    position: relative;
+  }
+  .theme-switcher-label input {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 71px;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .theme-switcher-label svg {
+    width: 71px;
+    height: auto;
+    display: block;
+  }
+  .theme-switcher-label input + svg .light {
+    transition: opacity 0.75s cubic-bezier(0.68, 0.25, 0.265, 1);
+  }
+  .theme-switcher-label input + svg .translate,
+  .theme-switcher-label input + svg .rotate,
+  .theme-switcher-label input + svg .background,
+  .theme-switcher-label input + svg .astronaut,
+  .theme-switcher-label input + svg .surfer {
+    transition: transform 0.75s cubic-bezier(0.68, 0.25, 0.265, 1);
+  }
+  .theme-switcher-label input:checked + svg .light {
+    opacity: 0;
+  }
+  .theme-switcher-label input:checked + svg .translate {
+    transform: translateX(0px);
+  }
+  .theme-switcher-label input:checked + svg .rotate {
+    transform: rotate(0deg);
+  }
+
+  .theme-switcher-label input:checked + svg .background {
+    transform: translate(0px) scale(1);
+  }
+  
