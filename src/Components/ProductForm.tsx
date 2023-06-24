@@ -17,7 +17,7 @@ export interface ExistingType {
   images?: File[]
   url?: string
   selectedCategory?: string
-  productProperties: ProductProperties
+  productProperties?: ProductProperties
 }
 export interface ImageFile extends File {
   name: string
