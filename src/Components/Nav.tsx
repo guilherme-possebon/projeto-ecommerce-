@@ -46,7 +46,7 @@ export default function Nav() {
           />
         </svg>
 
-        <span className="">Admin</span>
+        <span>Admin</span>
       </Link>
       <nav className="flex flex-col gap-2">
         <Link
