@@ -15,10 +15,10 @@ export default function Products() {
     <Layout>
       <Link
         href={'/products/new'}
-        className="bg-blue-900 text-white rounded-md py-1 px-2"
+        className="bg-blue-900 text-white dark:text-teste rounded-md py-1 px-2"
       >
         Adicionar um novo produto
-      </Link>{' '}
+      </Link>
       <br />
       {Object.keys(products).length > 0 ? (
         <table className="basic">

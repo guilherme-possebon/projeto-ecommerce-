@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Category, CategoryInterface } from '../../../models/Category'
 import { mongooseConnect } from '../../../lib/mongoose'
+import { isAdminRequest } from './auth/[...nextauth]'
 
 export default async function handle(
   req: NextApiRequest,
@@ -8,6 +9,7 @@ export default async function handle(
 ) {
   const { method } = req
   await mongooseConnect()
+  await isAdminRequest(req, res)
 
   if (method === 'GET') {
     res.json(await Category.find().populate('parent'))

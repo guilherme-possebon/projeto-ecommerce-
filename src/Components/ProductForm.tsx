@@ -184,8 +184,9 @@ export default function ProductForm({
       return
     } else {
       axios.get('/api/products?id=' + id).then((response) => {
-        const { productUrls } = response.data
+        const { productUrls, category } = response.data
         setProductUrls(productUrls)
+        setSelectedCategory(category)
       })
     }
   }, [id])
@@ -196,7 +197,7 @@ export default function ProductForm({
     })
   }, [])
 
-  const propertiesToFill: {
+  let propertiesToFill: {
     values: string[]
     name: string
   }[] = []
@@ -213,12 +214,15 @@ export default function ProductForm({
           ({ _id }) => _id === catInfo?.parent?._id
         )
         if (parentCategory) {
+          22222
           propertiesToFill.push(...(parentCategory.properties || []))
           catInfo = parentCategory
         }
       }
     }
   }
+
+  console.log(selectedCategory, 11111111111)
 
   function setProductProp(propName: string, value: string) {
     setProductProperties((prev) => ({
@@ -237,6 +241,7 @@ export default function ProductForm({
           name="product-name"
           id="product-name"
           placeholder="Nome do produto"
+          required
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -261,7 +266,7 @@ export default function ProductForm({
         {propertiesToFill.length > 0 &&
           propertiesToFill.map((p) => (
             <div className="text-black flex gap-1">
-              <p>{p.name}:</p>
+              <p className="w-auto">{p.name}:</p>
               <select
                 name="propertiesValues"
                 id="propertiesValues"
@@ -284,17 +289,15 @@ export default function ProductForm({
             {progress > 0
               ? `Upload ${progress.toFixed()}% concluido`
               : 'Fazer upload da imagem:'}
-            <label>
-              <input
-                type="file"
-                name="image-file"
-                id="image-file"
-                className="file-input"
-                accept="image/*"
-                multiple
-                onChange={addProductPhoto}
-              />
-            </label>
+            <input
+              type="file"
+              name="image-file"
+              id="image-file"
+              className="file-input"
+              accept="image/*"
+              multiple
+              onChange={addProductPhoto}
+            />
           </div>
 
           {/* -----------------------------------------------Fotos infos----------------------------------------------- */}
@@ -345,6 +348,7 @@ export default function ProductForm({
           name="description"
           id="description"
           placeholder="Descrição"
+          required
           onChange={(e) => setDescription(e.target.value)}
           value={description}
         ></textarea>
@@ -357,6 +361,7 @@ export default function ProductForm({
           name="price"
           id="price"
           placeholder="Preço"
+          required
           onChange={(e) => setPrice(e.target.value)}
           value={price}
         />

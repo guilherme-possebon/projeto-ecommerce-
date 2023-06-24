@@ -2,6 +2,7 @@ import { Product } from '../../../models/Product'
 import type { ProductInterface } from '../../../models/Product'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { mongooseConnect } from '../../../lib/mongoose'
+import { isAdminRequest } from './auth/[...nextauth]'
 
 export default async function handle(
   req: NextApiRequest,
@@ -9,6 +10,7 @@ export default async function handle(
 ) {
   const { method } = req
   await mongooseConnect()
+  await isAdminRequest(req, res)
 
   if (method === 'GET') {
     // verifica o id do produto

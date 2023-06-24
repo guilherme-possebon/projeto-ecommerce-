@@ -67,7 +67,7 @@ export default function Categories() {
     setName(category.name)
     setParentCategory(category.parent?._id)
     setProperties(
-      category.properties.map(({ name, values }) => ({
+      category.properties?.map(({ name, values }) => ({
         name,
         values: Array.isArray(values) ? values.join(',') : values
       }))

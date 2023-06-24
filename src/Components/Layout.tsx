@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProp) {
   if (!session) {
     return (
       <>
-        <div className="bg-blue-900 w-screen h-screen flex items-center">
+        <div className="bg-bgGray w-screen h-screen flex items-center">
           <div className="text-center w-full">
             <button
               className="bg-white p-2 px-4 rounded-lg"
@@ -32,7 +32,7 @@ export default function Layout({ children }: LayoutProp) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="min-h-screen flex bg-blue-900 w-screen">
+      <div className="min-h-screen flex bg-bgGray">
         <Nav />
         <div className="bg-white flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">
           {children}
