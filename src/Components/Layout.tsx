@@ -34,7 +34,7 @@ export default function Layout({ children }: LayoutProp) {
 
       <div className="min-h-screen flex bg-bgGray">
         <Nav />
-        <div className="bg-white flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">
+        <div className="bg-white dark:bg-slate-500 flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">
           {children}
         </div>
       </div>
