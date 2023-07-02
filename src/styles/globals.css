@@ -5,30 +5,63 @@
 input, textarea, select { 
     @apply border-2 border-gray-300 rounded-md px-1 w-full mb-2 text-black;
 }
+.dark input, textarea, select { 
+    @apply border-gray-300 text-textDarkMode1;
+}
+
 input:focus, textarea:focus, select:focus {
     @apply border-blue-900
 }
+.dark input:focus, textarea:focus, select:focus {
+    @apply border-blue-900
+}
+
 h1 {
     @apply text-blue-900 mb-4 text-xl
 }
+.dark h1 {
+    @apply text-textDarkMode3
+}
+
 label {
     @apply text-blue-600
 }
+.dark label {
+    @apply text-textDarkMode4
+}
+
 .btn-primary {
     @apply bg-blue-900 text-white px-4 py-1 rounded-md
 }
+.dark .btn-primary {
+    @apply bg-bgDarkMode1 text-textDarkMode2
+}
+
 table.basic {
     @apply w-full mt-2
 }
+
 table.basic thead tr td {
     @apply bg-blue-100 
 }
+.dark table.basic thead tr td {
+    @apply bg-bgDarkMode2
+}
+
 table.basic tr td {
     @apply border border-blue-200 p-1
 }
+.dark table.basic tr td {
+    @apply border-blue-200
+}
+
 table.basic a {
     @apply bg-blue-900 text-white text-sm py-1 px-2 rounded-md inline-flex gap-1 mr-1
 }
+.dark table.basic a {
+    @apply bg-bgDarkMode1 text-textDarkMode2
+}
+
 .btn-red, .btn-default {
     @apply px-4 py-1 rounded-md
 }
@@ -36,25 +69,49 @@ table.basic a {
 .btn-red {
     @apply bg-red-800 text-white
 }
+.dark .btn-red {
+    @apply bg-bgDarkMode3 text-textDarkMode2
+}
+
 .btn-default {
     @apply bg-gray-600 text-white
+}
+.dark .btn-default {
+    @apply bg-bgDarkMode7 text-textDarkMode2
 }
 
 .image-infos {
     @apply flex gap-3
 }
+
 .image-infos label {
     @apply text-black cursor-pointer
 }
+.dark .image-infos label {
+    @apply text-textDarkMode1
+}
+
 .file-input {
     @apply block border-0 w-auto cursor-pointer text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 file:cursor-pointer hover:file:bg-violet-300 
 }
+.dark .file-input {
+    @apply text-textDarkMode6 file:bg-bgDarkMode8 file:text-textDarkMode5 hover:file:bg-bgDarkMode9
+}
+
 .button-success {
     @apply bg-green-500 hover:bg-green-600 focus:bg-green-600 active:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2
 }
+.dark .button-success {
+    @apply bg-bgDarkMode10 hover:bg-bgDarkMode11 focus:bg-bgDarkMode11 active:bg-bgDarkMode12 text-textDarkMode2
+}
+
 .button-danger {
     @apply bg-red-500 hover:bg-red-600 focus:bg-red-600 active:bg-red-700 text-white font-bold py-2 px-4 rounded mx-2
 }
+.dark .button-danger {
+    @apply bg-bgDarkMode4 hover:bg-bgDarkMode5 focus:bg-bgDarkMode5 active:bg-bgDarkMode6 text-textDarkMode2
+}
+
 
 @media screen and (max-width: 432px ) {
     table.basic a {

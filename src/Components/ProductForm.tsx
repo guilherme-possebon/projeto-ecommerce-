@@ -265,7 +265,7 @@ export default function ProductForm({
         </select>
         {propertiesToFill.length > 0 &&
           propertiesToFill.map((p) => (
-            <div className="text-black flex gap-1">
+            <div className="text-black dark:textDarkMode flex gap-1">
               <p className="w-auto">{p.name}:</p>
               <select
                 name="propertiesValues"
@@ -284,7 +284,7 @@ export default function ProductForm({
       {/* -----------------------------------------------Fotos----------------------------------------------- */}
       <label htmlFor="Photo">
         Fotos
-        <div className="mb-2 text-black">
+        <div className="mb-2 text-black dark:textDarkMode">
           <div>
             {progress > 0
               ? `Upload ${progress.toFixed()}% concluido`
@@ -351,6 +351,7 @@ export default function ProductForm({
           required
           onChange={(e) => setDescription(e.target.value)}
           value={description}
+          className="dark:textDarkMode"
         ></textarea>
       </label>
       {/* -----------------------------------------------Preço----------------------------------------------- */}

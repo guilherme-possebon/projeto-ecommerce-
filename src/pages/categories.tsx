@@ -153,7 +153,7 @@ export default function Categories() {
 
   return (
     <Layout>
-      <h1>Categories</h1>
+      <h1 className="dark:textDarkMode">Categorias</h1>
       <label>
         {editedCategory
           ? `Editando categoria: ${editedCategory.name}`

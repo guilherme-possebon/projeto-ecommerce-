@@ -1,11 +1,12 @@
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 export default function Nav() {
   const inactiveLink = 'flex gap-1 p-1'
-  const activeLink = inactiveLink + ' bg-hightlight text-black rounded-sm'
+  const activeLink =
+    inactiveLink + ' bg-hightlight text-black dark:textDarkMode rounded-sm'
   const inactiveIcon = 'w-6 h-6'
   const activeIcon = inactiveIcon + ' text-primary'
   const router = useRouter()
@@ -16,13 +17,12 @@ export default function Nav() {
     await signOut()
   }
 
-  const [checked, setChecked] = useState(true)
+  const [checked, setChecked] = useState<boolean>(true)
   const htmlElement = document.querySelector('html')
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
   }
-
   if (checked) {
     htmlElement?.classList.add('dark')
   } else {
@@ -177,8 +177,8 @@ export default function Nav() {
                   <use href="#background"></use>
                 </clipPath>
                 <linearGradient id="gradient-light" x1="0" x2="0" y1="0" y2="1">
-                  <stop stop-color="#8bc8f2" offset="0"></stop>
-                  <stop stop-color="#fff" offset="1"></stop>
+                  <stop stopColor="#8bc8f2" offset="0"></stop>
+                  <stop stopColor="#fff" offset="1"></stop>
                 </linearGradient>
                 <filter id="blur-light">
                   <feGaussianBlur stdDeviation="1"></feGaussianBlur>
@@ -195,23 +195,23 @@ export default function Nav() {
                   ></path>
                 </pattern>
                 <linearGradient id="gradient-dark" x1="0" x2="0" y1="0" y2="1">
-                  <stop stop-color="#1F2241" offset="0"></stop>
-                  <stop stop-color="#7D59DF" offset="1"></stop>
+                  <stop stopColor="#1F2241" offset="0"></stop>
+                  <stop stopColor="#7D59DF" offset="1"></stop>
                 </linearGradient>
                 <linearGradient id="gradient-mask" x1="0" x2="0" y1="0" y2="1">
-                  <stop stop-color="#000" offset="0"></stop>
-                  <stop stop-color="#fff" offset="1"></stop>
+                  <stop stopColor="#000" offset="0"></stop>
+                  <stop stopColor="#fff" offset="1"></stop>
                 </linearGradient>
                 <mask id="mask-dark">
                   <use fill="url(#gradient-mask)" href="#background"></use>
                 </mask>
                 <radialGradient id="gradient-moon">
-                  <stop stop-color="#fdfdfd" offset="0.7"></stop>
-                  <stop stop-color="#e2e2e2" offset="1"></stop>
+                  <stop stopColor="#fdfdfd" offset="0.7"></stop>
+                  <stop stopColor="#e2e2e2" offset="1"></stop>
                 </radialGradient>
                 <radialGradient id="gradient-crater">
-                  <stop stop-color="#e0e0e0" offset="0"></stop>
-                  <stop stop-color="#d9d9d9" offset="1"></stop>
+                  <stop stopColor="#e0e0e0" offset="0"></stop>
+                  <stop stopColor="#d9d9d9" offset="1"></stop>
                 </radialGradient>
                 <pattern
                   id="pattern-dark"
@@ -238,7 +238,7 @@ export default function Nav() {
                 </pattern>
               </defs>
               <g transform="translate(5 2.5)">
-                <g clip-path="url(#clip)">
+                <g clipPath="url(#clip)">
                   <g className="dark">
                     <use fill="url(#gradient-dark)" href="#background"></use>
                     <g
@@ -291,7 +291,7 @@ export default function Nav() {
                           transform="rotate(-30)"
                           fill="url(#gradient-crater)"
                           stroke="#d5d5d5"
-                          stroke-width="0.2"
+                          strokeWidth="0.2"
                           cx="0"
                           cy="0"
                           rx="4"
@@ -302,7 +302,7 @@ export default function Nav() {
                         <ellipse
                           fill="url(#gradient-crater)"
                           stroke="#d5d5d5"
-                          stroke-width="0.2"
+                          strokeWidth="0.2"
                           cx="0"
                           cy="0"
                           rx="3.85"
@@ -314,7 +314,7 @@ export default function Nav() {
                           transform="rotate(-10)"
                           fill="url(#gradient-crater)"
                           stroke="#d5d5d5"
-                          stroke-width="0.2"
+                          strokeWidth="0.2"
                           cx="0"
                           cy="0"
                           rx="2"
