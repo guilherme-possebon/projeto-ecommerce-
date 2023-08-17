@@ -1,7 +1,7 @@
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 export default function Nav() {
   const inactiveLink = 'flex gap-1 p-1'
