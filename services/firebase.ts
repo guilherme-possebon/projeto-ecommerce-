@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getStorage } from "firebase/storage";
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBUKuODCgPvYmYzm22K5y7OM6LTdN5LhxI',
@@ -8,8 +8,8 @@ const firebaseConfig = {
   storageBucket: 'nextjs-ecommerce-images-41632.appspot.com',
   messagingSenderId: '664832439069',
   appId: '1:664832439069:web:a4bb5c2649aab41d63e7f4',
-  measurementId: 'G-3BS7VRW87Y',
+  measurementId: 'G-3BS7VRW87Y'
 }
 
 export const app = initializeApp(firebaseConfig)
-export const storage = getStorage(app);
+export const storage = getStorage(app)
