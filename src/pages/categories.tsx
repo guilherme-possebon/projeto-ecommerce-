@@ -271,7 +271,7 @@ export default function Categories() {
           <thead>
             <tr>
               <td>Nome da categoria</td>
-              <td>Categoria pai</td>
+              <td>Categoria principal</td>
               <td></td>
             </tr>
           </thead>
