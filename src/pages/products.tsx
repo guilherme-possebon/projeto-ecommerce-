@@ -13,15 +13,12 @@ export default function Products() {
   }, [])
   return (
     <Layout>
-      <Link
-        href={'/products/new'}
-        className="bg-blue-900 dark:bgDarkMode1 text-white dark:text-textDarkMode rounded-md py-1 px-2"
-      >
+      <Link href={'/products/new'} className="btn-primary">
         Adicionar um novo produto
       </Link>
-      <br />
+
       {Object.keys(products).length > 0 ? (
-        <table className="basic">
+        <table className="basic mt-5">
           <thead>
             <tr>
               <td>Nome do produto</td>

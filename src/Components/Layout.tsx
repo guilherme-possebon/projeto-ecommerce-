@@ -39,7 +39,7 @@ export default function Layout({ children }: LayoutProp) {
       </Head>
 
       <div className="bg-bgGray">
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center md:hidden p-4">
           <button onClick={HandleClickButtonToShow}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,13 +56,13 @@ export default function Layout({ children }: LayoutProp) {
               />
             </svg>
           </button>
-          <Logo showLogo={showLogo} />
+          <div className="flex grow justify-center mr-6">
+            <Logo showLogo={showLogo} />
+          </div>
         </div>
         <div className=" flex min-h-screen dark:bgDarkMode">
           <Nav showNav={showNav} />
-          <div className="bg-white dark:bgDarkMode flex-grow mr-2 mt-2 mb-2 rounded-lg p-4">
-            {children}
-          </div>
+          <div className=" dark:bgDarkMode flex-grow p-4">{children}</div>
         </div>
       </div>
     </>
