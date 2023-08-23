@@ -141,7 +141,6 @@ export default function ProductForm({
       })
     }
   }
-  console.log(files)
 
   async function deleteImage(index: number) {
     const fileUrlToDelete = productUrls[index]
@@ -214,15 +213,12 @@ export default function ProductForm({
           ({ _id }) => _id === catInfo?.parent?._id
         )
         if (parentCategory) {
-          22222
           propertiesToFill.push(...(parentCategory.properties || []))
           catInfo = parentCategory
         }
       }
     }
   }
-
-  console.log(selectedCategory, 11111111111)
 
   function setProductProp(propName: string, value: string) {
     setProductProperties((prev) => ({
@@ -255,7 +251,9 @@ export default function ProductForm({
           value={selectedCategory}
           onChange={(ev) => setSelectedCategory(ev.target.value)}
         >
-          <option value="">Sem categoria</option>
+          <option key={'0'} value="">
+            Sem categoria
+          </option>
           {categories.length > 0 &&
             categories.map((c: { _id: string; name: string }) => (
               <option value={c._id} key={c._id}>
@@ -264,8 +262,11 @@ export default function ProductForm({
             ))}
         </select>
         {propertiesToFill.length > 0 &&
-          propertiesToFill.map((p) => (
-            <div className="text-black dark:textDarkMode flex gap-1">
+          propertiesToFill.map((p, index) => (
+            <div
+              key={index}
+              className="text-black dark:textDarkMode flex gap-1"
+            >
               <p className="w-auto">{p.name}:</p>
               <select
                 name="propertiesValues"
@@ -273,7 +274,11 @@ export default function ProductForm({
                 onChange={(ev) => setProductProp(p.name, ev.target.value)}
                 value={productProperties[p.name]}
               >
-                {p.values?.map((v) => <option value={v}>{v}</option>)}
+                {p.values?.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
               </select>
             </div>
           ))}
