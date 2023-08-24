@@ -5,7 +5,7 @@
 input,
 textarea,
 select {
-  @apply border-2 border-gray-300 rounded-md px-1 w-full mb-2 text-gray-400;
+  @apply border border-gray-200 text-black shadow-md rounded-sm p-2 mb-2 w-full;
 }
 .dark input,
 .dark textarea,
@@ -18,8 +18,10 @@ textarea:focus,
 select:focus {
   @apply border-blue-900;
 }
-/* .dark input:focus, .dark textarea:focus, .dark select:focus {
-    @apply border-blue-900
+/* .dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  @apply border-blue-900;
 } */
 
 h1 {
@@ -44,7 +46,7 @@ label {
 }
 
 table.basic {
-  @apply w-full bg-white rounded-sm shadow-md;
+  @apply w-full bg-white rounded-md shadow-md;
 }
 
 table.basic thead tr td {
@@ -94,9 +96,11 @@ table.basic a {
 .dark .image-infos label {
   @apply text-textDarkMode1;
 }
-
+.image-file {
+  @apply flex justify-center items-center text-black bg-gray-300 w-32 h-24 rounded-md text-lg;
+}
 .file-input {
-  @apply block border-0 w-auto cursor-pointer text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 file:cursor-pointer hover:file:bg-violet-300;
+  @apply hidden border-0 w-auto cursor-pointer text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 file:cursor-pointer hover:file:bg-violet-300;
 }
 .dark .file-input {
   @apply text-textDarkMode6 file:bg-bgDarkMode8 file:text-textDarkMode5 hover:file:bg-bgDarkMode9;

@@ -278,7 +278,7 @@ export default function Categories() {
             </tr>
           </thead>
           <tbody>
-            {categories.length > 0 &&
+            {categories.length > 0 ? (
               categories.map((category) => (
                 <tr key={category._id}>
                   <td>{category.name}</td>
@@ -329,7 +329,10 @@ export default function Categories() {
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <div>Carregando lista das categorias...</div>
+            )}
           </tbody>
         </table>
       )}

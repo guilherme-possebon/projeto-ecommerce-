@@ -284,25 +284,9 @@ export default function ProductForm({
           ))}
       </label>
 
-      {/* -----------------------------------------------Fotos----------------------------------------------- */}
       <label htmlFor="Photo">
         Fotos
-        <div className="mb-2 text-black dark:textDarkMode">
-          <div>
-            {progress > 0
-              ? `Upload ${progress.toFixed()}% concluido`
-              : 'Fazer upload da imagem:'}
-            <input
-              type="file"
-              name="image-file"
-              id="image-file"
-              className="file-input"
-              accept="image/*"
-              multiple
-              onChange={addProductPhoto}
-            />
-          </div>
-
+        <div className="mb-2 text-black dark:textDarkMode flex">
           {/* -----------------------------------------------Fotos infos----------------------------------------------- */}
           <div className="image-infos">
             {productUrls?.map((url, index) => (
@@ -313,7 +297,7 @@ export default function ProductForm({
                 <img
                   src={url}
                   alt={`Uploaded Image ${index + 1}`}
-                  className="w-24 h-min"
+                  className="max-w-24 max-h-24 object-contain "
                   loading="lazy"
                 />
                 <button
@@ -341,6 +325,36 @@ export default function ProductForm({
                 </a>
               </div>
             ))}
+            {/* -----------------------------------------------Fotos----------------------------------------------- */}
+
+            <label htmlFor="image-file">
+              <input
+                type="file"
+                name="image-file"
+                id="image-file"
+                className="file-input"
+                accept="image/*"
+                multiple
+                onChange={addProductPhoto}
+              />
+              <div className="image-file">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-8 h-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                  />
+                </svg>
+                Upload
+              </div>
+            </label>
           </div>
         </div>
       </label>
