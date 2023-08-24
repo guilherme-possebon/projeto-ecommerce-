@@ -9,6 +9,7 @@ import {
 } from 'firebase/storage'
 import { storage } from '../../services/firebase'
 import Swal from 'sweetalert2'
+import LoadingSvg from '@/../public/Loading.svg'
 export interface ExistingType {
   title?: string
   description?: string
@@ -141,7 +142,9 @@ export default function ProductForm({
       })
     }
   }
-
+  {
+    /* -----------------------------------------------Deletar Foto----------------------------------------------- */
+  }
   async function deleteImage(index: number) {
     const fileUrlToDelete = productUrls[index]
 
@@ -225,6 +228,12 @@ export default function ProductForm({
       ...prev,
       [propName]: value
     }))
+  }
+
+  if (progress === 100) {
+    setTimeout(() => {
+      setProgress(0)
+    }, 1000)
   }
 
   return (
@@ -338,21 +347,31 @@ export default function ProductForm({
                 onChange={addProductPhoto}
               />
               <div className="image-file">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                  />
-                </svg>
-                Upload
+                {progress > 0 ? (
+                  <>
+                    <div className="p-2">
+                      <LoadingSvg />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-8 h-8"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                      />
+                    </svg>
+                    Upload
+                  </>
+                )}
               </div>
             </label>
           </div>

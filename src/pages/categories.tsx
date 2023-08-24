@@ -2,6 +2,7 @@ import Layout from '@/Components/Layout'
 import axios, { AxiosRequestConfig } from 'axios'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
+import LoadingSvg from '@/../public/Loading.svg'
 import { CategoryInterface } from '../../models/Category'
 
 export default function Categories() {
@@ -86,7 +87,7 @@ export default function Categories() {
     swalWithBootstrapButtons
       .fire({
         title: 'Você tem certeza?',
-        text: `Você ira deletar a categoria ${category.name}`,
+        text: `Você ira deletar a categoria "${category.name}"`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sim, deletar!',
@@ -269,72 +270,74 @@ export default function Categories() {
         </div>
       </form>
       {!editedCategory && (
-        <table className="basic mt-4">
-          <thead>
-            <tr>
-              <td>Nome da categoria</td>
-              <td>Categoria principal</td>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <tr key={category._id}>
-                  <td>{category.name}</td>
-                  <td>{category?.parent?.name}</td>
-                  <td>
-                    <button
-                      className="btn-primary mr-1"
-                      type="button"
-                      onClick={() => editCategory(category)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                        />
-                      </svg>
-                      {/* SVG edit */}
-                    </button>
-                    <button
-                      className="btn-primary"
-                      type="button"
-                      onClick={() => deleteCategory(category)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-
-                      {/* SVG delete */}
-                    </button>
-                  </td>
+        <>
+          {categories.length > 0 ? (
+            <table className="basic mt-4">
+              <thead>
+                <tr>
+                  <td>Nome da categoria</td>
+                  <td>Categoria principal</td>
+                  <td></td>
                 </tr>
-              ))
-            ) : (
-              <div>Carregando lista das categorias...</div>
-            )}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {categories.map((category) => (
+                  <tr key={category._id}>
+                    <td>{category.name}</td>
+                    <td>{category?.parent?.name}</td>
+                    <td>
+                      <button
+                        className="btn-primary mr-1"
+                        type="button"
+                        onClick={() => editCategory(category)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                          />
+                        </svg>
+                        {/* SVG edit */}
+                      </button>
+                      <button
+                        className="btn-primary"
+                        type="button"
+                        onClick={() => deleteCategory(category)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+
+                        {/* SVG delete */}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <LoadingSvg />
+          )}
+        </>
       )}
     </Layout>
   )

@@ -3,6 +3,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../models/Product'
+import LoadingSvg from '@/../public/Loading.svg'
 
 export default function Products() {
   const [products, setProducts] = useState<ProductInterface[]>([])
@@ -70,7 +71,7 @@ export default function Products() {
           </tbody>
         </table>
       ) : (
-        <div>Carregando lista de produtos...</div>
+        <LoadingSvg />
       )}
     </Layout>
   )
