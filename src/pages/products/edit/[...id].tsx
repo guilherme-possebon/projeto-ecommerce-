@@ -3,6 +3,7 @@ import ProductForm from '@/Components/ProductForm'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import LoadingSvg from '@/../public/Loading.svg'
 
 export default function EditProductPage() {
   const router = useRouter()
@@ -24,7 +25,7 @@ export default function EditProductPage() {
       {Object.keys(productInfo).length > 0 ? (
         <ProductForm {...productInfo} />
       ) : (
-        <div>Carregando edição do produto...</div>
+        <LoadingSvg />
       )}
     </Layout>
   )
