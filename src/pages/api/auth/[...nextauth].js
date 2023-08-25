@@ -7,7 +7,8 @@ const adminEmails = [
   'gpossebon67@gmail.com',
   'guilhermepossebon06@gmail.com',
   'schneider.gab0507@gmail.com',
-  'pedrohenlucca01@gmail.com'
+  'pedrohenlucca01@gmail.com',
+  'lucaspiassetta@gmail.com'
 ]
 
 export const authOptions = {
@@ -37,6 +38,6 @@ export async function isAdminRequest(req, res) {
   if (!adminEmails.includes(session?.user?.email)) {
     res.status(401)
     res.end()
-    throw new Error('Usuario sem permição')
+    throw new Error(`Usuario sem permição`)
   }
 }
