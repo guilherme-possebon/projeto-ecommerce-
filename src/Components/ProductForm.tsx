@@ -181,14 +181,21 @@ export default function ProductForm({
 
   const { id } = router.query
 
+  const [isLoadedProducts, setIsLoadedProducts] = useState<boolean>(false)
+  const [isLoadedCategories, setIsLoadedCategories] = useState<boolean>(false)
+
   useEffect(() => {
     if (!id) {
       return
     } else {
       axios.get('/api/products?id=' + id).then((response) => {
-        const { productUrls, category } = response.data
+        const {
+          productUrls,
+          category
+        }: { productUrls: string[]; category: string } = response.data
         setProductUrls(productUrls)
         setSelectedCategory(category)
+        setIsLoadedProducts(true)
       })
     }
   }, [id])
@@ -196,6 +203,7 @@ export default function ProductForm({
   useEffect(() => {
     axios.get('/api/categories').then((result) => {
       setCategories(result.data)
+      setIsLoadedCategories(true)
     })
   }, [])
 
@@ -238,174 +246,189 @@ export default function ProductForm({
 
   return (
     <form onSubmit={saveProduct}>
-      {/* -----------------------------------------------Nome do produto----------------------------------------------- */}
-      <label htmlFor="product-name">
-        Nome do produto
-        <input
-          type="text"
-          name="product-name"
-          id="product-name"
-          placeholder="Nome do produto"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </label>
-      {/* -----------------------------------------------Categorias----------------------------------------------- */}
-      <label htmlFor="Category-label">
-        Categoria
-        <select
-          name="Category-label"
-          id="Category-label"
-          value={selectedCategory}
-          onChange={(ev) => setSelectedCategory(ev.target.value)}
-        >
-          <option key={'0'} value="">
-            Sem categoria
-          </option>
-          {categories.length > 0 &&
-            categories.map((c: { _id: string; name: string }) => (
-              <option value={c._id} key={c._id}>
-                {c.name}
-              </option>
-            ))}
-        </select>
-        {propertiesToFill.length > 0 &&
-          propertiesToFill.map((p, index) => (
-            <div
-              key={index}
-              className="text-black dark:textDarkMode flex gap-1"
-            >
-              <p className="w-auto">{p.name}:</p>
-              <select
-                name="propertiesValues"
-                id="propertiesValues"
-                onChange={(ev) => setProductProp(p.name, ev.target.value)}
-                value={productProperties[p.name]}
-              >
-                {p.values?.map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
-      </label>
-
-      <label htmlFor="Photo">
-        Fotos
-        <div className="mb-2 text-black dark:textDarkMode flex">
-          {/* -----------------------------------------------Fotos infos----------------------------------------------- */}
-          <div className="image-infos">
-            {productUrls?.map((url, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center justify-end "
-              >
-                <img
-                  src={url}
-                  alt={`Uploaded Image ${index + 1}`}
-                  className="max-w-24 max-h-24 object-contain "
-                  loading="lazy"
-                />
-                <button
-                  type="button"
-                  onClick={() => deleteImage(index)}
-                  className="btn-default mt-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                    />
-                  </svg>
-                </button>
-                <a href={url} target="_blank" className="text-gray-400">
-                  {index + 1}
-                </a>
-              </div>
-            ))}
-            {/* -----------------------------------------------Fotos----------------------------------------------- */}
-
-            <label htmlFor="image-file">
+      {isLoadedCategories && isLoadedProducts === true ? (
+        <>
+          {/* -----------------------------------------------Nome do produto----------------------------------------------- */}
+          <div className="mb-2">
+            <label htmlFor="product-name">
+              Nome do produto
               <input
-                type="file"
-                name="image-file"
-                id="image-file"
-                className="file-input"
-                accept="image/*"
-                multiple
-                onChange={addProductPhoto}
+                type="text"
+                name="product-name"
+                id="product-name"
+                placeholder="Nome do produto"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
-              <div className="image-file">
-                {progress > 0 ? (
-                  <>
-                    <div className="p-2">
-                      <LoadingSvg />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-8 h-8"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                      />
-                    </svg>
-                    Upload
-                  </>
-                )}
-              </div>
             </label>
           </div>
-        </div>
-      </label>
-      {/* -----------------------------------------------Descrição----------------------------------------------- */}
-      <label htmlFor="description">
-        Descrição
-        <textarea
-          name="description"
-          id="description"
-          placeholder="Descrição"
-          required
-          onChange={(e) => setDescription(e.target.value)}
-          value={description}
-          className="dark:textDarkMode"
-        ></textarea>
-      </label>
-      {/* -----------------------------------------------Preço----------------------------------------------- */}
-      <label htmlFor="price">
-        Preço (in R$)
-        <input
-          type="number"
-          name="price"
-          id="price"
-          placeholder="Preço"
-          required
-          onChange={(e) => setPrice(e.target.value)}
-          value={price}
-        />
-      </label>
-      <button className="btn-primary" type="submit">
-        Salvar
-      </button>
+          {/* -----------------------------------------------Categorias----------------------------------------------- */}
+          <label className="CategoryLabel" htmlFor="Category-label">
+            Categoria
+            <select
+              name="Category-label"
+              id="Category-label"
+              value={selectedCategory}
+              onChange={(ev) => setSelectedCategory(ev.target.value)}
+            >
+              <option key={'0'} value="">
+                Sem categoria
+              </option>
+              {categories.length > 0 &&
+                categories.map((c: { _id: string; name: string }) => (
+                  <option value={c._id} key={c._id}>
+                    {c.name}
+                  </option>
+                ))}
+            </select>
+            {propertiesToFill.length > 0 &&
+              propertiesToFill.map((p, index) => (
+                <>
+                  <div key={index} className="text-black dark:textDarkMode">
+                    <p className="pName">
+                      {p.name[0].toUpperCase() + p.name.substring(1)}:
+                    </p>
+
+                    <select
+                      name="propertiesValues"
+                      id="propertiesValues"
+                      onChange={(ev) => setProductProp(p.name, ev.target.value)}
+                      value={productProperties[p.name]}
+                    >
+                      {p.values?.map((v) => (
+                        <option key={v} value={v}>
+                          {v}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              ))}
+          </label>
+          <label htmlFor="Photo">
+            Fotos
+            <div className="mb-2 text-black dark:textDarkMode flex">
+              {/* -----------------------------------------------Fotos infos----------------------------------------------- */}
+              <div className="image-infos">
+                {productUrls?.map((url, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center justify-end "
+                  >
+                    <img
+                      src={url}
+                      alt={`Uploaded Image ${index + 1}`}
+                      className="max-w-24 max-h-24 object-contain "
+                      loading="lazy"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => deleteImage(index)}
+                      className="btn-default mt-2"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                        />
+                      </svg>
+                    </button>
+                    <a href={url} target="_blank" className="text-gray-400">
+                      {index + 1}
+                    </a>
+                  </div>
+                ))}
+                {/* -----------------------------------------------Fotos----------------------------------------------- */}
+
+                <label htmlFor="image-file">
+                  <input
+                    type="file"
+                    name="image-file"
+                    id="image-file"
+                    className="file-input"
+                    accept="image/*"
+                    multiple
+                    onChange={addProductPhoto}
+                  />
+                  <div className="image-file">
+                    {progress > 0 ? (
+                      <>
+                        <div className="p-2">
+                          <LoadingSvg />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-8 h-8"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                          />
+                        </svg>
+                        Upload
+                      </>
+                    )}
+                  </div>
+                </label>
+              </div>
+            </div>
+          </label>
+          {/* -----------------------------------------------Descrição----------------------------------------------- */}
+          <div className="mb-2">
+            <label htmlFor="description">
+              Descrição
+              <textarea
+                name="description"
+                id="description"
+                placeholder="Descrição"
+                required
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                className="dark:textDarkMode"
+              ></textarea>
+            </label>
+          </div>
+          {/* -----------------------------------------------Preço----------------------------------------------- */}
+          <div className="mb-4">
+            <label htmlFor="price">
+              Preço (em R$)
+              <input
+                type="number"
+                name="price"
+                id="price"
+                placeholder="Preço"
+                required
+                onChange={(e) => setPrice(e.target.value)}
+                value={price}
+              />
+            </label>
+          </div>
+          <button className="btn-primary" type="submit">
+            Salvar
+          </button>
+        </>
+      ) : (
+        <>
+          <LoadingSvg />
+        </>
+      )}
     </form>
   )
 }
