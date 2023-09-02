@@ -5,12 +5,16 @@
 input,
 textarea,
 select {
-  @apply border border-gray-200 text-black shadow-md rounded-sm p-2 mb-2 w-full;
+  @apply border border-gray-200 text-black shadow-md rounded-sm p-2 w-full;
 }
 .dark input,
 .dark textarea,
 .dark select {
   @apply border-gray-300 text-textDarkMode2;
+}
+
+.CategoryLabel div {
+  @apply my-2;
 }
 
 input:focus,
@@ -25,14 +29,21 @@ select:focus {
 } */
 
 h1 {
-  @apply text-blue-900 mb-4 text-xl;
+  @apply text-gray-800 mb-4 text-xl;
 }
 .dark h1 {
   @apply text-textDarkMode3;
 }
 
+.pName {
+  @apply text-gray-600 text-sm;
+}
+.dark .pName {
+  @apply text-textDarkMode3;
+}
+
 label {
-  @apply text-blue-900;
+  @apply text-gray-800 text-[17px];
 }
 .dark label {
   @apply text-textDarkMode4;
