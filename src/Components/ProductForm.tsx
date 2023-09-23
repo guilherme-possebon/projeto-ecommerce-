@@ -7,8 +7,8 @@ import {
   getDownloadURL,
   deleteObject
 } from 'firebase/storage'
-import { storage } from '../../services/firebase'
 import Swal from 'sweetalert2'
+import { storage } from '../../services/firebase'
 import LoadingSvg from '@/../public/Loading.svg'
 export interface ExistingType {
   title?: string
@@ -166,12 +166,30 @@ export default function ProductForm({
         })
       })
       .catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: `Erro: ${err}`
-        })
+        const specificError = 'storage/object-not-found'
+
+        if (err instanceof Error && err.message.includes(specificError)) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: 'Imagem não encontrada no banco de dados'
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `Erro: ${err}`
+          })
+        }
       })
+
     const updatedUrls = productUrls.filter((url, i) => i !== index)
     setProductUrls(updatedUrls)
 
@@ -354,7 +372,7 @@ export default function ProductForm({
                     type="file"
                     name="image-file"
                     id="image-file"
-                    className="file-input"
+                    className="hidden"
                     accept="image/*"
                     multiple
                     onChange={addProductPhoto}
@@ -374,7 +392,7 @@ export default function ProductForm({
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-8 h-8"
+                          className="w-6 h-6 "
                         >
                           <path
                             strokeLinecap="round"
