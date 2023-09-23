@@ -72,7 +72,7 @@ table.basic tr td {
 }
 
 table.basic a {
-  @apply text-white px-4 py-1 rounded-sm flex gap-1 mx-1 items-center bg-gray-700 text-sm;
+  @apply text-white px-4 py-1 w-[96px] rounded-sm inline-flex gap-1 mx-1 items-center bg-gray-700 text-sm;
 }
 .dark table.basic a {
   @apply bg-bgDarkMode1 text-textDarkMode2;
@@ -111,7 +111,6 @@ table.basic a {
   @apply flex justify-center items-center text-black bg-white w-24 h-24 rounded-md text-base shadow-sm border border-gray-200;
 }
 
-
 .button-success {
   @apply bg-green-500 hover:bg-green-600 focus:bg-green-600 active:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2;
 }
@@ -126,9 +125,12 @@ table.basic a {
   @apply bg-bgDarkMode4 hover:bg-bgDarkMode5 focus:bg-bgDarkMode5 active:bg-bgDarkMode6 text-textDarkMode2;
 }
 
-@media screen and (max-width: 432px) {
+@media screen and (max-width: 439px) {
   table.basic a {
-    @apply mb-1 mx-0 w-[96px] justify-center;
+    @apply mb-1 mx-0 flex;
+  }
+  table.basic tr td div {
+    @apply flex flex-col items-center;
   }
 }
 
