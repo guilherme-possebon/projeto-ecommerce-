@@ -28,15 +28,6 @@ export default function Categories() {
   async function saveCategory(ev: { preventDefault: () => void }) {
     ev.preventDefault()
 
-    if (name.length == 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Nome invalido'
-      })
-      return
-    }
-
     const propertiesFiltered = properties.filter((obj) => {
       const values = Object.values(obj)
       return values.some((value) => value.trim() !== '')
@@ -182,28 +173,35 @@ export default function Categories() {
           </select>
         </div>
         <div className="mb-2">
-          <label className="block">
-            {editedCategory ? 'Editando propriedades' : 'Propriedades'}
-          </label>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="btn-default text-sm"
-              onClick={addPropertie}
-            >
-              Adicionar nova propriedade
-            </button>
-            <button
-              type="button"
-              className="btn-default text-sm"
-              onClick={() => setProperties([])}
-            >
-              Limpar propriedades
-            </button>
-          </div>
+          {name || editedCategory ? (
+            <>
+              <label className="block">
+                {editedCategory ? 'Editando propriedades' : 'Propriedades'}
+              </label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className="btn-default text-sm"
+                  onClick={addPropertie}
+                >
+                  Adicionar nova propriedade
+                </button>
+                <button
+                  type="button"
+                  className="btn-default text-sm"
+                  onClick={() => setProperties([])}
+                >
+                  Limpar propriedades
+                </button>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
           {properties?.length > 0 ? (
             properties.map((property, index) => (
-              <div className="flex gap-1 my-2">
+              <div key={index} className="flex gap-1 my-2">
                 <input
                   type="text"
                   className="mb-0"
@@ -250,9 +248,13 @@ export default function Categories() {
           )}
         </div>
         <div className="flex gap-1">
-          <button type="submit" className="btn-primary">
-            Salvar
-          </button>
+          {name ? (
+            <button type="submit" className="btn-primary">
+              Salvar
+            </button>
+          ) : (
+            <></>
+          )}
           {editedCategory && (
             <button
               type="button"
