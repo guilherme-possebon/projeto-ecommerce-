@@ -4,14 +4,55 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../models/Product'
 import LoadingSvg from '@/../public/Loading.svg'
+import { useProductContext } from '@/Context/ProductContext'
+import Swal from 'sweetalert2'
 
 export default function Products() {
   const [products, setProducts] = useState<ProductInterface[]>([])
+  const { productSaved, setProductSaved } = useProductContext()
+  const { productDeleted, setProductDeleted } = useProductContext()
   useEffect(() => {
     axios.get('/api/products').then((response) => {
       setProducts(response.data)
     })
   }, [])
+
+  useEffect(() => {
+    if (productSaved) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true
+      })
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Salvo com sucesso!'
+      })
+    }
+    setProductSaved(false)
+  }, [productSaved])
+
+  useEffect(() => {
+    if (productDeleted) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true
+      })
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Deletado com sucesso!'
+      })
+    }
+    setProductDeleted(false)
+  }, [productDeleted])
+
   return (
     <Layout>
       <Link href={'/products/new'} className="btn-primary">

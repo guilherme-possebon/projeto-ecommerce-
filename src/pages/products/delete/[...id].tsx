@@ -3,12 +3,14 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { ProductInterface } from '../../../../models/Product'
+import { useProductContext } from '@/Context/ProductContext'
 
 export default function DeleteProductPage() {
   const router = useRouter()
   const { id } = router.query
 
   const [productInfo, setProductInfo] = useState<ProductInterface>()
+  const { setProductDeleted } = useProductContext()
 
   useEffect(() => {
     if (!id) {
@@ -24,6 +26,7 @@ export default function DeleteProductPage() {
   }
   async function deleteProduct() {
     await axios.delete('/api/products?id=' + id)
+    setProductDeleted(true)
     goBack()
   }
 

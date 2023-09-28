@@ -10,6 +10,7 @@ import {
 import Swal from 'sweetalert2'
 import { storage } from '../../services/firebase'
 import LoadingSvg from '@/../public/Loading.svg'
+import { useProductContext } from '@/Context/ProductContext'
 export interface ExistingType {
   title?: string
   description?: string
@@ -58,13 +59,16 @@ export default function ProductForm({
   const [productUrls, setProductUrls] = useState<string[]>([])
   const [goToProducts, setGoToProducts] = useState<boolean>(false)
   const [categories, setCategories] = useState<Category[]>([])
+  const { setProductSaved } = useProductContext()
 
   const router = useRouter()
+
   {
     /* -----------------------------------------------Salvar Produto----------------------------------------------- */
   }
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
+
     const data = {
       title,
       description,
@@ -82,6 +86,7 @@ export default function ProductForm({
       await axios.post('/api/products', data)
     }
     setGoToProducts(true)
+    setProductSaved(true)
   }
 
   if (goToProducts) {
@@ -199,31 +204,49 @@ export default function ProductForm({
 
   const { id } = router.query
 
+  console.log(router)
+
   const [isLoadedProducts, setIsLoadedProducts] = useState<boolean>(false)
   const [isLoadedCategories, setIsLoadedCategories] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (!id) {
-      return
-    } else {
-      axios.get('/api/products?id=' + id).then((response) => {
-        const {
-          productUrls,
-          category
-        }: { productUrls: string[]; category: string } = response.data
-        setProductUrls(productUrls)
-        setSelectedCategory(category)
-        setIsLoadedProducts(true)
-      })
-    }
-  }, [id])
+  switch (true) {
+    case router.pathname === '/products/edit/[...id]':
+      useEffect(() => {
+        if (!id) {
+          return
+        } else {
+          axios.get('/api/products?id=' + id).then((response) => {
+            const {
+              productUrls,
+              category
+            }: { productUrls: string[]; category: string } = response.data
+            setProductUrls(productUrls)
+            setSelectedCategory(category)
+            setIsLoadedProducts(true)
+          })
+        }
+      }, [id])
 
-  useEffect(() => {
-    axios.get('/api/categories').then((result) => {
-      setCategories(result.data)
-      setIsLoadedCategories(true)
-    })
-  }, [])
+      useEffect(() => {
+        axios.get('/api/categories').then((result) => {
+          setCategories(result.data)
+          setIsLoadedCategories(true)
+        })
+      }, [])
+      break
+    case router.pathname === '/products/new':
+      useEffect(() => {
+        axios.get('/api/categories').then((result) => {
+          setCategories(result.data)
+          setIsLoadedCategories(true)
+          setIsLoadedProducts(true)
+        })
+      }, [])
+
+      break
+  }
+
+  console.log('tesad edit')
 
   let propertiesToFill: {
     values: string[]
@@ -264,7 +287,7 @@ export default function ProductForm({
 
   return (
     <form onSubmit={saveProduct}>
-      {isLoadedCategories && isLoadedProducts === true ? (
+      {isLoadedCategories && isLoadedProducts ? (
         <>
           {/* -----------------------------------------------Nome do produto----------------------------------------------- */}
           <div className="mb-2">
@@ -302,26 +325,24 @@ export default function ProductForm({
             </select>
             {propertiesToFill.length > 0 &&
               propertiesToFill.map((p, index) => (
-                <>
-                  <div key={index} className="text-black dark:textDarkMode">
-                    <p className="pName">
-                      {p.name[0].toUpperCase() + p.name.substring(1)}:
-                    </p>
+                <div key={index} className="text-black dark:textDarkMode">
+                  <p className="pName">
+                    {p.name[0].toUpperCase() + p.name.substring(1)}:
+                  </p>
 
-                    <select
-                      name="propertiesValues"
-                      id="propertiesValues"
-                      onChange={(ev) => setProductProp(p.name, ev.target.value)}
-                      value={productProperties[p.name]}
-                    >
-                      {p.values?.map((v) => (
-                        <option key={v} value={v}>
-                          {v}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </>
+                  <select
+                    name="propertiesValues"
+                    id="propertiesValues"
+                    onChange={(ev) => setProductProp(p.name, ev.target.value)}
+                    value={productProperties[p.name]}
+                  >
+                    {p.values?.map((v) => (
+                      <option key={v} value={v}>
+                        {v}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               ))}
           </label>
           <label htmlFor="Photo">
@@ -329,15 +350,15 @@ export default function ProductForm({
             <div className="mb-2 text-black dark:textDarkMode flex">
               {/* -----------------------------------------------Fotos infos----------------------------------------------- */}
               <div className="image-infos">
-                {productUrls?.map((url, index) => (
+                {productUrls?.map((url: string, index: number) => (
                   <div
                     key={index}
                     className="flex flex-col items-center justify-end "
                   >
                     <img
                       src={url}
-                      alt={`Uploaded Image ${index + 1}`}
-                      className="max-w-24 max-h-24 object-contain "
+                      alt={`Imagem não encontrada`}
+                      className="max-w-24 max-h-24 object-contain"
                       loading="lazy"
                     />
                     <button
