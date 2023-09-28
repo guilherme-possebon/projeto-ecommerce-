@@ -204,10 +204,9 @@ export default function ProductForm({
 
   const { id } = router.query
 
-  console.log(router)
-
   const [isLoadedProducts, setIsLoadedProducts] = useState<boolean>(false)
   const [isLoadedCategories, setIsLoadedCategories] = useState<boolean>(false)
+  const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
 
   switch (true) {
     case router.pathname === '/products/edit/[...id]':
@@ -240,13 +239,12 @@ export default function ProductForm({
           setCategories(result.data)
           setIsLoadedCategories(true)
           setIsLoadedProducts(true)
+          setIsNewProduct(true)
         })
       }, [])
 
       break
   }
-
-  console.log('tesad edit')
 
   let propertiesToFill: {
     values: string[]
@@ -460,7 +458,7 @@ export default function ProductForm({
             </label>
           </div>
           <button className="btn-primary" type="submit">
-            Salvar
+            {isNewProduct ? 'Criar' : 'Salvar'}
           </button>
         </>
       ) : (
