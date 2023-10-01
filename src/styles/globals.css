@@ -72,19 +72,23 @@ table.basic tr td {
 }
 
 table.basic a {
-  @apply text-white px-4 py-1 w-[96px] rounded-sm inline-flex gap-1 mx-1 items-center bg-gray-700 text-sm;
+  @apply px-4 py-1 w-[96px] rounded-sm inline-flex gap-1 mx-1 items-center text-sm;
 }
+
 .dark table.basic a {
   @apply bg-bgDarkMode1 text-textDarkMode2;
 }
 
 .btn-red,
 .btn-default {
-  @apply px-4 py-1 rounded-md;
+  @apply px-4 py-1 rounded-sm shadow-sm cursor-pointer;
 }
 
 .btn-red {
-  @apply bg-red-800 text-white;
+  @apply bg-red-300 text-red-700;
+}
+.btn-red:hover {
+  @apply bg-red-400 text-red-900;
 }
 .dark .btn-red {
   @apply bg-bgDarkMode3 text-textDarkMode2;
@@ -92,6 +96,9 @@ table.basic a {
 
 .btn-default {
   @apply bg-gray-600 text-white;
+}
+.btn-default:hover {
+  @apply bg-gray-700;
 }
 .dark .btn-default {
   @apply bg-bgDarkMode7 text-textDarkMode2;
@@ -108,7 +115,7 @@ table.basic a {
   @apply text-textDarkMode1;
 }
 .image-file {
-  @apply flex justify-center items-center text-black bg-white w-24 h-24 rounded-md text-base shadow-sm border border-gray-200;
+  @apply flex justify-center items-center text-black bg-white w-28 h-28 rounded-md text-base shadow-sm border border-gray-200;
 }
 
 .button-success {

@@ -351,13 +351,12 @@ export default function ProductForm({
                 {productUrls?.map((url: string, index: number) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center justify-end "
+                    className="flex flex-col items-center justify-end"
                   >
                     <img
                       src={url}
                       alt={`Imagem não encontrada`}
-                      className="max-w-24 max-h-24 object-contain"
-                      loading="lazy"
+                      className="object-contain h-28 w-28 p-2 bg-white shadow-sm rounded-sm border border-gray-200"
                     />
                     <button
                       type="button"
@@ -384,7 +383,7 @@ export default function ProductForm({
                     </a>
                   </div>
                 ))}
-                {/* -----------------------------------------------Fotos----------------------------------------------- */}
+                {/* -----------------------------------------------Add Fotos----------------------------------------------- */}
 
                 <label htmlFor="image-file">
                   <input
