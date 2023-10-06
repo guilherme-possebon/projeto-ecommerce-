@@ -60,6 +60,7 @@ export default function ProductForm({
   const [goToProducts, setGoToProducts] = useState<boolean>(false)
   const [categories, setCategories] = useState<Category[]>([])
   const { setProductSaved } = useProductContext()
+  const { setProductCreated } = useProductContext()
 
   const router = useRouter()
 
@@ -87,6 +88,9 @@ export default function ProductForm({
     }
     setGoToProducts(true)
     setProductSaved(true)
+    if (isNewProduct) {
+      setProductCreated(true)
+    } else setProductSaved(true)
   }
 
   if (goToProducts) {

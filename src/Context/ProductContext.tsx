@@ -5,6 +5,8 @@ interface ProductContextType {
   setProductSaved: (saved: boolean) => void
   productDeleted?: boolean
   setProductDeleted: (Deleted: boolean) => void
+  productCreated?: boolean
+  setProductCreated: (Created: boolean) => void
 }
 {
   /* -----------------------------------------------Save----------------------------------------------- */
@@ -28,6 +30,7 @@ export function ProductProvider({
 }: ProductProviderProps): JSX.Element {
   const [productSaved, setProductSaved] = useState<boolean>(false)
   const [productDeleted, setProductDeleted] = useState<boolean>(false)
+  const [productCreated, setProductCreated] = useState<boolean>(false)
 
   return (
     <ProductContext.Provider
@@ -35,7 +38,9 @@ export function ProductProvider({
         productSaved,
         setProductSaved,
         productDeleted,
-        setProductDeleted
+        setProductDeleted,
+        productCreated,
+        setProductCreated
       }}
     >
       {children}

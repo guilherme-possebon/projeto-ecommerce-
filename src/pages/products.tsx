@@ -11,22 +11,27 @@ export default function Products() {
   const [products, setProducts] = useState<ProductInterface[]>([])
   const { productSaved, setProductSaved } = useProductContext()
   const { productDeleted, setProductDeleted } = useProductContext()
+  const { productCreated, setProductCreated } = useProductContext()
   useEffect(() => {
     axios.get('/api/products').then((response) => {
       setProducts(response.data)
     })
   }, [])
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true
+  })
+
+  {
+    /* -----------------------------------------------Produto salvo----------------------------------------------- */
+  }
+
   useEffect(() => {
     if (productSaved) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 1000,
-        timerProgressBar: true
-      })
-
       Toast.fire({
         icon: 'success',
         title: 'Salvo com sucesso!'
@@ -35,16 +40,12 @@ export default function Products() {
     setProductSaved(false)
   }, [productSaved])
 
+  {
+    /* -----------------------------------------------Produto deletado----------------------------------------------- */
+  }
+
   useEffect(() => {
     if (productDeleted) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 1000,
-        timerProgressBar: true
-      })
-
       Toast.fire({
         icon: 'success',
         title: 'Deletado com sucesso!'
@@ -52,6 +53,20 @@ export default function Products() {
     }
     setProductDeleted(false)
   }, [productDeleted])
+
+  {
+    /* -----------------------------------------------Produto criado----------------------------------------------- */
+  }
+
+  useEffect(() => {
+    if (productCreated) {
+      Toast.fire({
+        icon: 'success',
+        title: 'Criado com sucesso!'
+      })
+    }
+    setProductCreated(false)
+  }, [setProductCreated])
 
   return (
     <Layout>
