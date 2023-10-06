@@ -132,6 +132,16 @@ table.basic a {
   @apply bg-bgDarkMode4 hover:bg-bgDarkMode5 focus:bg-bgDarkMode5 active:bg-bgDarkMode6 text-textDarkMode2;
 }
 
+.propertiesOptions {
+  @apply flex gap-1;
+}
+
+@media screen and (max-width: 405px) {
+  .propertiesOptions button {
+    @apply w-1/2;
+  }
+}
+
 @media screen and (max-width: 439px) {
   table.basic a {
     @apply mb-1 mx-0 flex;
@@ -139,45 +149,4 @@ table.basic a {
   table.basic tr td div {
     @apply flex flex-col items-center;
   }
-}
-
-.theme-switcher-label {
-  position: relative;
-}
-.theme-switcher-label input {
-  position: absolute;
-  top: 0%;
-  left: 0%;
-  width: 71px;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-.theme-switcher-label svg {
-  width: 71px;
-  height: auto;
-  display: block;
-}
-.theme-switcher-label input + svg .light {
-  transition: opacity 0.75s cubic-bezier(0.68, 0.25, 0.265, 1);
-}
-.theme-switcher-label input + svg .translate,
-.theme-switcher-label input + svg .rotate,
-.theme-switcher-label input + svg .background,
-.theme-switcher-label input + svg .astronaut,
-.theme-switcher-label input + svg .surfer {
-  transition: transform 0.75s cubic-bezier(0.68, 0.25, 0.265, 1);
-}
-.theme-switcher-label input:checked + svg .light {
-  opacity: 0;
-}
-.theme-switcher-label input:checked + svg .translate {
-  transform: translateX(0px);
-}
-.theme-switcher-label input:checked + svg .rotate {
-  transform: rotate(0deg);
-}
-
-.theme-switcher-label input:checked + svg .background {
-  transform: translate(0px) scale(1);
 }

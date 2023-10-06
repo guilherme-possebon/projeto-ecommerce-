@@ -178,7 +178,7 @@ export default function Categories() {
               <label className="block">
                 {editedCategory ? 'Editando propriedades' : 'Propriedades'}
               </label>
-              <div className="flex gap-2">
+              <div className="propertiesOptions">
                 <button
                   type="button"
                   className="btn-default text-sm"
