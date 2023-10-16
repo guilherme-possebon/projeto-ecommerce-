@@ -9,7 +9,7 @@ const options = {}
 
 let client
 let clientPromise: Promise<MongoClient>
-let globalWithMongo = global as typeof globalThis & {
+const globalWithMongo = global as typeof globalThis & {
   _mongoClientPromise: Promise<MongoClient>
 }
 

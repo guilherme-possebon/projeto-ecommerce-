@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, useEffect, useState } from 'react'
 import {
   ref,
   uploadBytesResumable,

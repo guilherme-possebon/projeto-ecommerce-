@@ -18,6 +18,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/mongodb.ts", "src/pages/api/products.ts", "src/pages/api/auth/[...nextauth].js", "src/Components/ProductForm.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "lib/mongodb.ts",
+    "src/pages/api/products.ts",
+    "src/pages/api/auth/[...nextauth].js",
+    "src/Components/ProductForm.tsx"
+  ],
   "exclude": ["node_modules"]
 }
