@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Logo from './Logo'
 
-export type showProp = {
+export interface showProp {
   showNav?: boolean
   showLogo?: boolean
 }
@@ -12,8 +12,6 @@ export default function Nav({ showNav }: showProp) {
   const inactiveLink = 'flex gap-1 p-1'
   const activeLink =
     inactiveLink + ' bg-hightlight text-black dark:textDarkMode rounded-sm'
-  const inactiveIcon = 'w-6 h-6'
-  const activeIcon = inactiveIcon + ' text-primary'
   const router = useRouter()
   const { pathname } = router
 
