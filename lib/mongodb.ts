@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-if (!process.env.MONGODB_URI) {
+if (process.env.MONGODB_URI == null) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
 }
 
@@ -14,7 +14,7 @@ const globalWithMongo = global as typeof globalThis & {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  if (!globalWithMongo._mongoClientPromise) {
+  if (globalWithMongo._mongoClientPromise === null) {
     client = new MongoClient(uri, options)
     globalWithMongo._mongoClientPromise = client.connect()
   }

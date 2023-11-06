@@ -2,22 +2,28 @@ import Layout from '@/Components/Layout'
 import ProductForm from '@/Components/ProductForm'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LoadingSvg from '@/../public/Loading.svg'
 
 export default function EditProductPage() {
   const router = useRouter()
   const { id } = router.query
   const [productInfo, setProductInfo] = useState({})
+  const idParam = Array.isArray(id) ? id.join(',') : id
 
   useEffect(() => {
-    if (!id) {
+    if (id === undefined) {
       return
     }
-    axios.get('/api/products?id=' + id).then((response) => {
-      setProductInfo(response.data)
-    })
-  }, [id])
+    axios
+      .get(`/api/products?id=${idParam}`)
+      .then((response) => {
+        setProductInfo(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [id, idParam])
 
   return (
     <Layout>

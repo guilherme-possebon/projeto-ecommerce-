@@ -11,6 +11,8 @@ import Swal from 'sweetalert2'
 import { storage } from '../../services/firebase'
 import LoadingSvg from '@/../public/Loading.svg'
 import { useProductContext } from '@/Context/ProductContext'
+import React from 'react'
+
 export interface ExistingType {
   title?: string
   description?: string
@@ -250,7 +252,7 @@ export default function ProductForm({
       break
   }
 
-  let propertiesToFill: {
+  const propertiesToFill: {
     values: string[]
     name: string
   }[] = []
@@ -382,7 +384,12 @@ export default function ProductForm({
                         />
                       </svg>
                     </button>
-                    <a href={url} target="_blank" className="text-gray-400">
+                    <a
+                      href={url}
+                      target="_blank"
+                      className="text-gray-400"
+                      rel="noreferrer"
+                    >
                       {index + 1}
                     </a>
                   </div>

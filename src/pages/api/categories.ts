@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Category, CategoryInterface } from '../../../models/Category'
-import { mongooseConnect } from '../../../lib/mongoose'
+import { Category, type CategoryInterface } from '../../models/Category'
+import { mongooseConnect } from '../../lib/mongoose'
 import { isAdminRequest } from './auth/[...nextauth]'
 
 export default async function handle(
@@ -20,7 +20,7 @@ export default async function handle(
     const { name, parentCategory, properties }: CategoryInterface = req.body
     const categoryDoc = await Category.create({
       name,
-      parent: parentCategory || undefined,
+      parent: parentCategory.length > 0 || undefined,
       properties
     })
     res.json(categoryDoc)
@@ -32,7 +32,7 @@ export default async function handle(
       { _id },
       {
         name,
-        parent: parentCategory || undefined,
+        parent: parentCategory.length > 0 || undefined,
         properties
       }
     )

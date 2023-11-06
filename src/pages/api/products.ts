@@ -1,7 +1,7 @@
-import { Product } from '../../../models/Product'
-import type { ProductInterface } from '../../../models/Product'
+import { Product } from '../../models/Product'
+import type { ProductInterface } from '../../models/Product'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { mongooseConnect } from '../../../lib/mongoose'
+import { mongooseConnect } from '../../lib/mongoose'
 import { isAdminRequest } from './auth/[...nextauth]'
 
 export default async function handle(
@@ -14,7 +14,7 @@ export default async function handle(
 
   if (method === 'GET') {
     // verifica o id do produto
-    if (req.query?.id) {
+    if (req.query?.id !== undefined) {
       res.json(await Product.findOne({ _id: req.query.id }))
     } else {
       res.json(await Product.find())
@@ -22,7 +22,7 @@ export default async function handle(
   }
 
   if (method === 'POST') {
-    // Possibilita a cração do produto
+    // Possibilita a criação do produto
     const {
       title,
       description,
@@ -37,16 +37,18 @@ export default async function handle(
         description,
         price,
         productUrls,
-        category: selectedCategory || undefined,
+        category: selectedCategory.length > 0 || undefined,
         productProperties
       })
       res.json(productDoc)
     } catch (error) {
-      if (error) throw error
+      if (error instanceof Error) {
+        throw error
+      }
       res.status(500).json({ error: 'Failed to create product' })
     }
   }
-
+  // TODO resolver esse bug
   if (method === 'PUT') {
     // possibilita a edição do produto
     const {
@@ -65,7 +67,7 @@ export default async function handle(
         description,
         price,
         productUrls,
-        category: selectedCategory || undefined,
+        category: selectedCategory.length > 0 || undefined,
         productProperties
       }
     )
@@ -73,7 +75,7 @@ export default async function handle(
   }
   if (method === 'DELETE') {
     // Deleta o produto
-    if (req.query?.id) {
+    if (req.query?.id !== undefined) {
       await Product.deleteOne({ _id: req.query?.id })
       res.json(true)
     }

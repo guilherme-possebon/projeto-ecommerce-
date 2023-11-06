@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { showProp } from './Nav'
+import React from 'react'
 
 export default function Logo({ showLogo }: showProp) {
   return (

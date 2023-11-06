@@ -1,26 +1,46 @@
 import Head from 'next/head'
 import { useSession, signIn } from 'next-auth/react'
-import Nav from '@/Components/Nav'
-import { ReactNode, useState } from 'react'
+import Nav from './Nav'
+import { type ReactNode, useState } from 'react'
 import Logo from './Logo'
+import React from 'react'
 
-type LayoutProp = {
+interface LayoutProp {
   children: ReactNode
 }
 export default function Layout({ children }: LayoutProp) {
   const [showNav, setShowNav] = useState(false)
   const [showLogo, setShowLogo] = useState(false)
   const { data: session } = useSession()
-  if (!session) {
+  console.log(session, 111)
+  const handleSignInGoogle = async () => {
+    await signIn('google')
+  }
+  const handleSignInGitHub = async () => {
+    await signIn('github')
+  }
+  if (session === null) {
     return (
       <>
         <div className="bg-bgGray dark:bgDarkMode w-screen h-screen flex items-center">
           <div className="text-center w-full">
             <button
               className="bg-white dark:bgDarkMode p-2 px-4 rounded-lg"
-              onClick={() => signIn('google')}
+              onClick={() => {
+                void handleSignInGoogle()
+              }}
             >
               Logar com google
+            </button>
+          </div>
+          <div className="text-center w-full">
+            <button
+              className="bg-white dark:bgDarkMode p-2 px-4 rounded-lg"
+              onClick={() => {
+                void handleSignInGitHub()
+              }}
+            >
+              Logar com github
             </button>
           </div>
         </div>

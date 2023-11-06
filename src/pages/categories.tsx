@@ -1,9 +1,10 @@
 import Layout from '@/Components/Layout'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import LoadingSvg from '@/../public/Loading.svg'
 import { CategoryInterface } from '../../models/Category'
+import React from 'react'
 
 export default function Categories() {
   const [name, setName] = useState('')
@@ -33,7 +34,7 @@ export default function Categories() {
       return values.some((value) => value.trim() !== '')
     })
 
-    let data = {
+    const data = {
       name,
       parentCategory,
       properties: propertiesFiltered.map((p) => ({

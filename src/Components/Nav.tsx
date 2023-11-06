@@ -2,6 +2,7 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Logo from './Logo'
+import React, { useEffect, useState } from 'react'
 
 export interface showProp {
   showNav?: boolean
@@ -15,28 +16,47 @@ export default function Nav({ showNav }: showProp) {
   const router = useRouter()
   const { pathname } = router
 
-  async function logout() {
-    await router.push('/')
-    await signOut()
+  const Logout = async (): Promise<void> => {
+    try {
+      await signOut()
+      await router.push('/')
+    } catch (error) {
+      console.error(error)
+    }
   }
-  const htmlElement = document.querySelector('html')
-  switch (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    case true:
-      // htmlElement?.classList.add('dark')
-      htmlElement?.classList.remove('dark')
-      break
-    case false:
-      htmlElement?.classList.remove('dark')
-  }
+
+  const [htmlElement, setHtmlElement] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const htmlEl = document.querySelector('html')
+    if (htmlEl != null) {
+      setHtmlElement(htmlEl as HTMLElement)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && htmlElement != null) {
+      switch (
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        case true:
+          htmlElement.classList.remove('dark')
+          break
+        case false:
+          htmlElement.classList.remove('dark')
+          break
+        default:
+          break
+      }
+    }
+  }, [htmlElement])
 
   return (
     <aside
       className={
-        (showNav ? 'left-0' : '-left-full') +
+        (showNav ?? false ? 'left-0' : '-left-full') +
         ' text-gray-500 p-4 w-full bg-bgGray h-full fixed md:static md:w-auto md:top-0 transition-all'
       }
     >
@@ -151,7 +171,13 @@ export default function Nav({ showNav }: showProp) {
           </svg>
           Configurações
         </Link>
-        <button type="button" onClick={logout} className={inactiveLink}>
+        <button
+          type="button"
+          onClick={() => {
+            void Logout()
+          }}
+          className={inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

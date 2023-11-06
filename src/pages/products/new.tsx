@@ -1,5 +1,6 @@
 import Layout from '@/Components/Layout'
 import ProductForm from '@/Components/ProductForm'
+import React from 'react'
 
 export default function NewProduct() {
   return (

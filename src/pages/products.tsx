@@ -1,7 +1,7 @@
 import Layout from '@/Components/Layout'
 import axios from 'axios'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../models/Product'
 import LoadingSvg from '@/../public/Loading.svg'
 import { useProductContext } from '@/Context/ProductContext'
@@ -13,7 +13,7 @@ export default function Products() {
   const { productDeleted, setProductDeleted } = useProductContext()
   const { productCreated, setProductCreated } = useProductContext()
   useEffect(() => {
-    axios.get('/api/products').then((response) => {
+    void axios.get('/api/products').then((response) => {
       setProducts(response.data)
     })
   }, [])
@@ -26,47 +26,35 @@ export default function Products() {
     timerProgressBar: true
   })
 
-  {
-    /* -----------------------------------------------Produto salvo----------------------------------------------- */
-  }
-
   useEffect(() => {
-    if (productSaved) {
-      Toast.fire({
+    if (productSaved ?? false) {
+      void Toast.fire({
         icon: 'success',
         title: 'Salvo com sucesso!'
       })
     }
     setProductSaved(false)
-  }, [productSaved])
-
-  {
-    /* -----------------------------------------------Produto deletado----------------------------------------------- */
-  }
+  }, [Toast, productSaved, setProductSaved])
 
   useEffect(() => {
-    if (productDeleted) {
-      Toast.fire({
+    if (productDeleted ?? false) {
+      void Toast.fire({
         icon: 'success',
         title: 'Deletado com sucesso!'
       })
     }
     setProductDeleted(false)
-  }, [productDeleted])
-
-  {
-    /* -----------------------------------------------Produto criado----------------------------------------------- */
-  }
+  }, [Toast, productDeleted, setProductDeleted])
 
   useEffect(() => {
-    if (productCreated) {
-      Toast.fire({
+    if (productCreated ?? false) {
+      void Toast.fire({
         icon: 'success',
         title: 'Criado com sucesso!'
       })
     }
     setProductCreated(false)
-  }, [setProductCreated])
+  }, [Toast, productCreated, setProductCreated])
 
   return (
     <Layout>

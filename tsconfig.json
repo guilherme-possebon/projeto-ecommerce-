@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "allowUmdGlobalAccess": true,
     "incremental": true,
     "plugins": [],
     "paths": {
@@ -26,6 +27,7 @@
     "lib/mongodb.ts",
     "src/pages/api/products.ts",
     "src/pages/api/auth/[...nextauth].js",
+    "src/api/auth/[auth0]/route.js",
     "src/Components/ProductForm.tsx"
   ],
   "exclude": ["node_modules"]
