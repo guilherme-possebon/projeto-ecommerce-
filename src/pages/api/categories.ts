@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Category, type CategoryInterface } from '../../models/Category'
-import { mongooseConnect } from '../../lib/mongoose'
+import { Category, type CategoryInterface } from '../../../models/Category'
+import { mongooseConnect } from '../../../lib/mongoose'
 import { isAdminRequest } from './auth/[...nextauth]'
 
 export default async function handle(

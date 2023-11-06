@@ -1,7 +1,7 @@
-import { Product } from '../../models/Product'
-import type { ProductInterface } from '../../models/Product'
+import { Product } from '../../../models/Product'
+import type { ProductInterface } from '../../../models/Product'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { mongooseConnect } from '../../lib/mongoose'
+import { mongooseConnect } from '../../../lib/mongoose'
 import { isAdminRequest } from './auth/[...nextauth]'
 
 export default async function handle(

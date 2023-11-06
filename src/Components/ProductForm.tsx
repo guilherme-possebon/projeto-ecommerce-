@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
+import React, { type ChangeEvent, useEffect, useState } from 'react'
 import {
   ref,
   uploadBytesResumable,
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2'
 import { storage } from '../../services/firebase'
 import LoadingSvg from '@/../public/Loading.svg'
 import { useProductContext } from '@/Context/ProductContext'
-import React from 'react'
+import Image from 'next/image'
 
 export interface ExistingType {
   title?: string
@@ -28,14 +28,12 @@ export interface ImageFile extends File {
   lastModified: number
 }
 
-interface ProductProperties {
-  [key: string]: string
-}
+type ProductProperties = Record<string, string>
 
 interface Category {
   _id: string
   name: string
-  properties: { name: string; values: string[] }[]
+  properties: Array<{ name: string; values: string[] }>
   parent: object & { name: string; properties: string[]; _id: string }
 }
 
@@ -48,27 +46,67 @@ export default function ProductForm({
   productProperties: assignedProperties
 }: ExistingType) {
   // ------------------Produto------------------
-  const [title, setTitle] = useState(existingTitle || '')
+  const [title, setTitle] = useState(existingTitle != null || '')
   const [selectedCategory, setSelectedCategory] = useState(
-    assignedCategory || ''
+    assignedCategory != null || ''
   )
   const [productProperties, setProductProperties] = useState<ProductProperties>(
-    assignedProperties || {}
+    assignedProperties ?? {}
   )
-  const [description, setDescription] = useState(existingDescription || '')
-  const [price, setPrice] = useState(existingPrice || '')
+  const [description, setDescription] = useState(
+    existingDescription != null || ''
+  )
+  const [price, setPrice] = useState(existingPrice != null || '')
 
   const [productUrls, setProductUrls] = useState<string[]>([])
   const [goToProducts, setGoToProducts] = useState<boolean>(false)
   const [categories, setCategories] = useState<Category[]>([])
   const { setProductSaved } = useProductContext()
   const { setProductCreated } = useProductContext()
+  const [isLoadedProducts, setIsLoadedProducts] = useState<boolean>(false)
+  const [isLoadedCategories, setIsLoadedCategories] = useState<boolean>(false)
+  const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
 
   const router = useRouter()
 
-  {
-    /* -----------------------------------------------Salvar Produto----------------------------------------------- */
+  const { id } = router.query
+
+  switch (true) {
+    case router.pathname === '/products/edit/[...id]':
+      useEffect(() => {
+        if (id?.length === 0) {
+          return 0
+        } else {
+          void axios.get('/api/products?id=' + id).then((response) => {
+            const {
+              productUrls,
+              category
+            }: { productUrls: string[]; category: string } = response.data
+            setProductUrls(productUrls)
+            setSelectedCategory(category)
+            setIsLoadedProducts(true)
+          })
+        }
+        void axios.get('/api/categories').then((result) => {
+          setCategories(result.data)
+          setIsLoadedCategories(true)
+        })
+      }, [id])
+
+      break
+    case router.pathname === '/products/new':
+      useEffect(() => {
+        void axios.get('/api/categories').then((result) => {
+          setCategories(result.data)
+          setIsLoadedCategories(true)
+          setIsLoadedProducts(true)
+          setIsNewProduct(true)
+        })
+      }, [])
+
+      break
   }
+
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
 
@@ -81,11 +119,11 @@ export default function ProductForm({
       productProperties
     }
 
-    if (_id) {
-      //update
+    if (_id != null) {
+      // update
       await axios.put('/api/products', { ...data, _id })
     } else {
-      //create
+      // create
       await axios.post('/api/products', data)
     }
     setGoToProducts(true)
@@ -96,7 +134,7 @@ export default function ProductForm({
   }
 
   if (goToProducts) {
-    router.push('/products')
+    void router.push('/products')
   }
 
   // ------------------Imagem------------------
@@ -107,11 +145,8 @@ export default function ProductForm({
     contentType: 'image/jpeg'
   }
 
-  {
-    /* -----------------------------------------------Adicionar Foto----------------------------------------------- */
-  }
   function addProductPhoto(event: ChangeEvent<HTMLInputElement>) {
-    if (event.target.files && event.target.files.length > 0) {
+    if (event.target.files != null && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files)
       setFiles(selectedFiles)
 
@@ -142,7 +177,7 @@ export default function ProductForm({
             }
           },
           () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               setProductUrls((prevProductUrls) => [
                 ...prevProductUrls,
                 downloadURL
@@ -153,9 +188,7 @@ export default function ProductForm({
       })
     }
   }
-  {
-    /* -----------------------------------------------Deletar Foto----------------------------------------------- */
-  }
+
   async function deleteImage(index: number) {
     const fileUrlToDelete = productUrls[index]
 
@@ -171,7 +204,7 @@ export default function ProductForm({
           timerProgressBar: true
         })
 
-        Toast.fire({
+        void Toast.fire({
           icon: 'success',
           title: 'Deletado com sucesso!'
         })
@@ -188,12 +221,12 @@ export default function ProductForm({
             timerProgressBar: true
           })
 
-          Toast.fire({
+          void Toast.fire({
             icon: 'error',
             title: 'Imagem não encontrada no banco de dados'
           })
         } else {
-          Swal.fire({
+          void Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: `Erro: ${err}`
@@ -208,68 +241,24 @@ export default function ProductForm({
     setFiles(updatedFiles)
   }
 
-  const { id } = router.query
-
-  const [isLoadedProducts, setIsLoadedProducts] = useState<boolean>(false)
-  const [isLoadedCategories, setIsLoadedCategories] = useState<boolean>(false)
-  const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
-
-  switch (true) {
-    case router.pathname === '/products/edit/[...id]':
-      useEffect(() => {
-        if (!id) {
-          return
-        } else {
-          axios.get('/api/products?id=' + id).then((response) => {
-            const {
-              productUrls,
-              category
-            }: { productUrls: string[]; category: string } = response.data
-            setProductUrls(productUrls)
-            setSelectedCategory(category)
-            setIsLoadedProducts(true)
-          })
-        }
-      }, [id])
-
-      useEffect(() => {
-        axios.get('/api/categories').then((result) => {
-          setCategories(result.data)
-          setIsLoadedCategories(true)
-        })
-      }, [])
-      break
-    case router.pathname === '/products/new':
-      useEffect(() => {
-        axios.get('/api/categories').then((result) => {
-          setCategories(result.data)
-          setIsLoadedCategories(true)
-          setIsLoadedProducts(true)
-          setIsNewProduct(true)
-        })
-      }, [])
-
-      break
-  }
-
-  const propertiesToFill: {
+  const propertiesToFill: Array<{
     values: string[]
     name: string
-  }[] = []
+  }> = []
 
   if (categories.length > 0 && selectedCategory) {
     let catInfo: Category | undefined = categories.find(
       ({ _id }) => _id === selectedCategory
     )
 
-    if (catInfo) {
-      propertiesToFill.push(...(catInfo?.properties || []))
-      while (catInfo?.parent?._id) {
+    if (catInfo != null) {
+      propertiesToFill.push(...(catInfo?.properties ?? []))
+      while (catInfo?.parent?._id !== '') {
         const parentCategory = categories.find(
           ({ _id }) => _id === catInfo?.parent?._id
         )
-        if (parentCategory) {
-          propertiesToFill.push(...(parentCategory.properties || []))
+        if (parentCategory != null) {
+          propertiesToFill.push(...(parentCategory.properties ?? []))
           catInfo = parentCategory
         }
       }
@@ -290,7 +279,11 @@ export default function ProductForm({
   }
 
   return (
-    <form onSubmit={saveProduct}>
+    <form
+      onSubmit={() => {
+        void saveProduct
+      }}
+    >
       {isLoadedCategories && isLoadedProducts ? (
         <>
           {/* -----------------------------------------------Nome do produto----------------------------------------------- */}
@@ -304,7 +297,9 @@ export default function ProductForm({
                 placeholder="Nome do produto"
                 required
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value)
+                }}
               />
             </label>
           </div>
@@ -315,7 +310,9 @@ export default function ProductForm({
               name="Category-label"
               id="Category-label"
               value={selectedCategory}
-              onChange={(ev) => setSelectedCategory(ev.target.value)}
+              onChange={(ev) => {
+                setSelectedCategory(ev.target.value)
+              }}
             >
               <option key={'0'} value="">
                 Sem categoria
@@ -337,7 +334,9 @@ export default function ProductForm({
                   <select
                     name="propertiesValues"
                     id="propertiesValues"
-                    onChange={(ev) => setProductProp(p.name, ev.target.value)}
+                    onChange={(ev) => {
+                      setProductProp(p.name, ev.target.value)
+                    }}
                     value={productProperties[p.name]}
                   >
                     {p.values?.map((v) => (
@@ -359,14 +358,16 @@ export default function ProductForm({
                     key={index}
                     className="flex flex-col items-center justify-end"
                   >
-                    <img
+                    <Image
                       src={url}
                       alt={`Imagem não encontrada`}
                       className="object-contain h-28 w-28 p-2 bg-white shadow-sm rounded-sm border border-gray-200"
                     />
                     <button
                       type="button"
-                      onClick={() => deleteImage(index)}
+                      onClick={() => {
+                        void deleteImage(index)
+                      }}
                       className="btn-default mt-2"
                     >
                       <svg
@@ -446,7 +447,9 @@ export default function ProductForm({
                 id="description"
                 placeholder="Descrição"
                 required
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value)
+                }}
                 value={description}
                 className="dark:textDarkMode"
               ></textarea>
@@ -462,7 +465,9 @@ export default function ProductForm({
                 id="price"
                 placeholder="Preço"
                 required
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  setPrice(e.target.value)
+                }}
                 value={price}
               />
             </label>
