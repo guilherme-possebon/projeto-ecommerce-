@@ -7,18 +7,21 @@ if (process.env.MONGODB_URI == null) {
 const uri = process.env.MONGODB_URI
 const options = {}
 
-let client
-let clientPromise: Promise<MongoClient>
-const globalWithMongo = global as typeof globalThis & {
-  _mongoClientPromise: Promise<MongoClient>
+let client: MongoClient | undefined
+let clientPromise: Promise<MongoClient> | undefined
+
+declare const global: {
+  _mongoClientPromise?: Promise<MongoClient>
 }
 
 if (process.env.NODE_ENV === 'development') {
-  if (globalWithMongo._mongoClientPromise === null) {
+  if (global._mongoClientPromise == null) {
     client = new MongoClient(uri, options)
-    globalWithMongo._mongoClientPromise = client.connect()
+    clientPromise = client.connect()
+    global._mongoClientPromise = clientPromise
+  } else {
+    clientPromise = global._mongoClientPromise
   }
-  clientPromise = globalWithMongo._mongoClientPromise
 } else {
   client = new MongoClient(uri, options)
   clientPromise = client.connect()

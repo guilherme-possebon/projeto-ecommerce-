@@ -26,8 +26,9 @@
     "**/*.tsx",
     "lib/mongodb.ts",
     "src/pages/api/products.ts",
+    "src/pages/api/categories.ts",
     "src/pages/api/auth/[...nextauth].js",
-    "src/api/auth/[auth0]/route.js",
+    "src/pages/api/restricted.js",
     "src/Components/ProductForm.tsx"
   ],
   "exclude": ["node_modules"]

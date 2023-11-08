@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { type ChangeEvent, useEffect, useState } from 'react'
@@ -46,17 +47,13 @@ export default function ProductForm({
   productProperties: assignedProperties
 }: ExistingType) {
   // ------------------Produto------------------
-  const [title, setTitle] = useState(existingTitle != null || '')
-  const [selectedCategory, setSelectedCategory] = useState(
-    assignedCategory != null || ''
-  )
+  const [title, setTitle] = useState(existingTitle)
+  const [selectedCategory, setSelectedCategory] = useState(assignedCategory)
   const [productProperties, setProductProperties] = useState<ProductProperties>(
     assignedProperties ?? {}
   )
-  const [description, setDescription] = useState(
-    existingDescription != null || ''
-  )
-  const [price, setPrice] = useState(existingPrice != null || '')
+  const [description, setDescription] = useState(existingDescription)
+  const [price, setPrice] = useState(existingPrice)
 
   const [productUrls, setProductUrls] = useState<string[]>([])
   const [goToProducts, setGoToProducts] = useState<boolean>(false)
@@ -70,6 +67,7 @@ export default function ProductForm({
   const router = useRouter()
 
   const { id } = router.query
+  console.log(id) 
 
   switch (true) {
     case router.pathname === '/products/edit/[...id]':
@@ -78,6 +76,7 @@ export default function ProductForm({
           return 0
         } else {
           void axios.get('/api/products?id=' + id).then((response) => {
+            // here
             const {
               productUrls,
               category
@@ -246,7 +245,7 @@ export default function ProductForm({
     name: string
   }> = []
 
-  if (categories.length > 0 && selectedCategory) {
+  if (categories.length > 0 && selectedCategory != null) {
     let catInfo: Category | undefined = categories.find(
       ({ _id }) => _id === selectedCategory
     )
