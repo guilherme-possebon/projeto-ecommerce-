@@ -9,6 +9,7 @@ const adminEmails = [
   'guilhermepossebon06@gmail.com',
   'schneider.gab0507@gmail.com',
   'pedrohenlucca01@gmail.com',
+  'guilhermepossebon7@gmail.com',
   'lucaspiassetta@gmail.com'
 ]
 

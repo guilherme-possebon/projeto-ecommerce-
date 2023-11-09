@@ -67,14 +67,15 @@ export default function ProductForm({
   const router = useRouter()
 
   const { id } = router.query
-  console.log(id) 
+  console.log(id)
 
   switch (true) {
     case router.pathname === '/products/edit/[...id]':
       useEffect(() => {
         if (id?.length === 0) {
-          return 0
+          return
         } else {
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
           void axios.get('/api/products?id=' + id).then((response) => {
             // here
             const {
@@ -150,6 +151,7 @@ export default function ProductForm({
       setFiles(selectedFiles)
 
       selectedFiles.forEach((selectedFile) => {
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         const fileName = title + ' ' + selectedFile.name + ' ' + new Date()
         const storageRef = ref(storage, fileName)
         const uploadTask = uploadBytesResumable(
