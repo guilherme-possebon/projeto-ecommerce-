@@ -16,9 +16,6 @@ export default function Layout({ children }: LayoutProp) {
   const handleSignInGoogle = async () => {
     await signIn('google')
   }
-  const handleSignInGitHub = async () => {
-    await signIn('github')
-  }
 
   if (status === 'loading') {
     return <p>Carregando...</p>
@@ -76,16 +73,6 @@ export default function Layout({ children }: LayoutProp) {
             }}
           >
             Logar com google
-          </button>
-        </div>
-        <div className="text-center w-full">
-          <button
-            className="bg-white dark:bgDarkMode p-2 px-4 rounded-lg"
-            onClick={() => {
-              void handleSignInGitHub()
-            }}
-          >
-            Logar com github
           </button>
         </div>
       </div>
