@@ -21,7 +21,7 @@ export default function EditProductPage() {
         setProductInfo(response.data)
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }, [id, idParam])
 

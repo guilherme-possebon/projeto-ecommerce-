@@ -4,7 +4,7 @@ import { type Key } from 'react'
 export interface CategoryInterface {
   id: Key | null | undefined
   name: string
-  _id: string
+  _id: string | boolean
   parent: string & { name: string; _id: string }
   parentCategory: string
   properties: Array<{ name: string; values: string }>

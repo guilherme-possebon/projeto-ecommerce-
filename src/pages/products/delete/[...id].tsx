@@ -23,7 +23,7 @@ export default function DeleteProductPage() {
         setProductInfo(response.data)
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }, [id, idParam])
 

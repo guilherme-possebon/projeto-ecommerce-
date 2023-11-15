@@ -1,8 +1,33 @@
 import Layout from '@/Components/Layout'
 import { useSession } from 'next-auth/react'
 import React from 'react'
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import clientPromise from '../../lib/mongodb'
 
-export default function Home() {
+interface ConnectionStatus {
+  isConnected: boolean
+}
+
+export const getServerSideProps: GetServerSideProps<
+  ConnectionStatus
+> = async () => {
+  try {
+    await clientPromise
+
+    return {
+      props: { isConnected: true }
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      props: { isConnected: false }
+    }
+  }
+}
+
+export default function Home({
+  isConnected
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: session } = useSession()
 
   return (

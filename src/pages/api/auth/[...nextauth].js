@@ -1,6 +1,6 @@
 import NextAuth, { getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { MongoDBAdapter } from '@auth/mongodb-adapter'
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import clientPromise from '../../../../lib/mongodb'
 
 const adminEmails = [
@@ -8,12 +8,11 @@ const adminEmails = [
   'guilhermepossebon06@gmail.com',
   'schneider.gab0507@gmail.com',
   'pedrohenlucca01@gmail.com',
-  'guilhermepossebon7@gmail.com',
   'lucaspiassetta@gmail.com'
 ]
 
 export const authOptions = {
-  adapter: MongoDBAdapter(async () => await clientPromise),
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,

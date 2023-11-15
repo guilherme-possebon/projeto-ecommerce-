@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  type ReactNode
-} from 'react'
+import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 interface ProductContextType {
   productSaved?: boolean
@@ -13,12 +8,14 @@ interface ProductContextType {
   productCreated?: boolean
   setProductCreated: (Created: boolean) => void
 }
-
+{
+  /* -----------------------------------------------Save----------------------------------------------- */
+}
 const ProductContext = createContext<ProductContextType | undefined>(undefined)
 
 export function useProductContext(): ProductContextType {
   const context = useContext(ProductContext)
-  if (context == null) {
+  if (!context) {
     throw new Error('useProductContext must be used within a ProductProvider')
   }
   return context

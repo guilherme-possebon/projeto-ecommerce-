@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { type showProp } from './Nav'
+import { showProp } from './Nav'
 import React from 'react'
 
 export default function Logo({ showLogo }: showProp) {
   return (
-    <div className={showLogo ?? false ? 'hidden' : 'block'}>
+    <div className={showLogo ? 'hidden' : 'block'}>
       <Link href={'/'} className="flex gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
