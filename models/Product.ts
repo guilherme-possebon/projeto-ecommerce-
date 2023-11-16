@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose'
+import mongoose, { model, models, Schema } from 'mongoose'
 
 export interface ProductInterface {
   title: string
@@ -19,4 +19,4 @@ const ProductShema = new Schema({
   productProperties: { type: Object }
 })
 
-export const Product = model('Product', ProductShema)
+export const Product = models.Product || model('Product', ProductShema)

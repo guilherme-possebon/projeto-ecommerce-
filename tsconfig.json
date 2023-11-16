@@ -28,6 +28,7 @@
     "src/pages/api/products.ts",
     "src/pages/api/auth/[...nextauth].js",
     "src/api/auth/[auth0]/route.js",
+    "next.config.js",
     "src/Components/ProductForm.tsx"
   ],
   "exclude": ["node_modules"]

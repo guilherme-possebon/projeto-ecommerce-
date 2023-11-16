@@ -3,7 +3,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../models/Product'
-import LoadingSvg from '@/../public/Loading.svg'
+import { TailSpin } from 'react-loading-icons'
 import { useProductContext } from '@/Context/ProductContext'
 import Swal from 'sweetalert2'
 
@@ -121,7 +121,9 @@ export default function Products() {
           </tbody>
         </table>
       ) : (
-        <LoadingSvg />
+        <>
+          <TailSpin stroke="#000" />
+        </>
       )}
     </Layout>
   )

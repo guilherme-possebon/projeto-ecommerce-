@@ -1,10 +1,10 @@
-import mongoose, { Schema, model } from 'mongoose'
+import mongoose, { Schema, model, models } from 'mongoose'
 import { type Key } from 'react'
 
 export interface CategoryInterface {
   id: Key | null | undefined
   name: string
-  _id: string | boolean
+  _id: string
   parent: string & { name: string; _id: string }
   parentCategory: string
   properties: Array<{ name: string; values: string }>
@@ -16,4 +16,4 @@ const CategorySchema = new Schema({
   properties: { type: [{ type: Object }], default: undefined }
 })
 
-export const Category = model('Category', CategorySchema)
+export const Category = models?.Category || model('Category', CategorySchema)

@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
+import React, { type ChangeEvent, useEffect, useState } from 'react'
 import {
   ref,
   uploadBytesResumable,
@@ -9,9 +11,9 @@ import {
 } from 'firebase/storage'
 import Swal from 'sweetalert2'
 import { storage } from '../../services/firebase'
-import LoadingSvg from '@/../public/Loading.svg'
+import { TailSpin } from 'react-loading-icons'
 import { useProductContext } from '@/Context/ProductContext'
-import React from 'react'
+import Image from 'next/image'
 
 export interface ExistingType {
   title?: string
@@ -28,14 +30,12 @@ export interface ImageFile extends File {
   lastModified: number
 }
 
-interface ProductProperties {
-  [key: string]: string
-}
+type ProductProperties = Record<string, string>
 
 interface Category {
   _id: string
   name: string
-  properties: { name: string; values: string[] }[]
+  properties: Array<{ name: string; values: string[] }>
   parent: object & { name: string; properties: string[]; _id: string }
 }
 
@@ -48,15 +48,15 @@ export default function ProductForm({
   productProperties: assignedProperties
 }: ExistingType) {
   // ------------------Produto------------------
-  const [title, setTitle] = useState(existingTitle || '')
+  const [title, setTitle] = useState(existingTitle ?? '')
   const [selectedCategory, setSelectedCategory] = useState(
-    assignedCategory || ''
+    assignedCategory ?? ''
   )
   const [productProperties, setProductProperties] = useState<ProductProperties>(
-    assignedProperties || {}
+    assignedProperties ?? {}
   )
-  const [description, setDescription] = useState(existingDescription || '')
-  const [price, setPrice] = useState(existingPrice || '')
+  const [description, setDescription] = useState(existingDescription ?? '')
+  const [price, setPrice] = useState(existingPrice ?? '')
 
   const [productUrls, setProductUrls] = useState<string[]>([])
   const [goToProducts, setGoToProducts] = useState<boolean>(false)
@@ -66,9 +66,8 @@ export default function ProductForm({
 
   const router = useRouter()
 
-  {
-    /* -----------------------------------------------Salvar Produto----------------------------------------------- */
-  }
+  /* -----------------------------------------------Salvar Produto----------------------------------------------- */
+
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
 
@@ -81,11 +80,13 @@ export default function ProductForm({
       productProperties
     }
 
+    console.log(data, 11)
+
     if (_id) {
-      //update
+      // update
       await axios.put('/api/products', { ...data, _id })
     } else {
-      //create
+      // create
       await axios.post('/api/products', data)
     }
     setGoToProducts(true)
@@ -96,7 +97,7 @@ export default function ProductForm({
   }
 
   if (goToProducts) {
-    router.push('/products')
+    void router.push('/products')
   }
 
   // ------------------Imagem------------------
@@ -107,9 +108,8 @@ export default function ProductForm({
     contentType: 'image/jpeg'
   }
 
-  {
-    /* -----------------------------------------------Adicionar Foto----------------------------------------------- */
-  }
+  /* -----------------------------------------------Adicionar Foto----------------------------------------------- */
+
   function addProductPhoto(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files)
@@ -142,7 +142,7 @@ export default function ProductForm({
             }
           },
           () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            void getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               setProductUrls((prevProductUrls) => [
                 ...prevProductUrls,
                 downloadURL
@@ -153,9 +153,9 @@ export default function ProductForm({
       })
     }
   }
-  {
-    /* -----------------------------------------------Deletar Foto----------------------------------------------- */
-  }
+
+  /* -----------------------------------------------Deletar Foto----------------------------------------------- */
+
   async function deleteImage(index: number) {
     const fileUrlToDelete = productUrls[index]
 
@@ -171,7 +171,7 @@ export default function ProductForm({
           timerProgressBar: true
         })
 
-        Toast.fire({
+        void Toast.fire({
           icon: 'success',
           title: 'Deletado com sucesso!'
         })
@@ -188,12 +188,12 @@ export default function ProductForm({
             timerProgressBar: true
           })
 
-          Toast.fire({
+          void Toast.fire({
             icon: 'error',
             title: 'Imagem não encontrada no banco de dados'
           })
         } else {
-          Swal.fire({
+          void Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: `Erro: ${err}`
@@ -218,9 +218,9 @@ export default function ProductForm({
     case router.pathname === '/products/edit/[...id]':
       useEffect(() => {
         if (!id) {
-          return
+          return undefined
         } else {
-          axios.get('/api/products?id=' + id).then((response) => {
+          void axios.get('/api/products?id=' + id).then((response) => {
             const {
               productUrls,
               category
@@ -233,7 +233,7 @@ export default function ProductForm({
       }, [id])
 
       useEffect(() => {
-        axios.get('/api/categories').then((result) => {
+        void axios.get('/api/categories').then((result) => {
           setCategories(result.data)
           setIsLoadedCategories(true)
         })
@@ -241,7 +241,7 @@ export default function ProductForm({
       break
     case router.pathname === '/products/new':
       useEffect(() => {
-        axios.get('/api/categories').then((result) => {
+        void axios.get('/api/categories').then((result) => {
           setCategories(result.data)
           setIsLoadedCategories(true)
           setIsLoadedProducts(true)
@@ -252,10 +252,10 @@ export default function ProductForm({
       break
   }
 
-  const propertiesToFill: {
+  const propertiesToFill: Array<{
     values: string[]
     name: string
-  }[] = []
+  }> = []
 
   if (categories.length > 0 && selectedCategory) {
     let catInfo: Category | undefined = categories.find(
@@ -304,7 +304,9 @@ export default function ProductForm({
                 placeholder="Nome do produto"
                 required
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value)
+                }}
               />
             </label>
           </div>
@@ -315,7 +317,9 @@ export default function ProductForm({
               name="Category-label"
               id="Category-label"
               value={selectedCategory}
-              onChange={(ev) => setSelectedCategory(ev.target.value)}
+              onChange={(ev) => {
+                setSelectedCategory(ev.target.value)
+              }}
             >
               <option key={'0'} value="">
                 Sem categoria
@@ -337,7 +341,9 @@ export default function ProductForm({
                   <select
                     name="propertiesValues"
                     id="propertiesValues"
-                    onChange={(ev) => setProductProp(p.name, ev.target.value)}
+                    onChange={(ev) => {
+                      setProductProp(p.name, ev.target.value)
+                    }}
                     value={productProperties[p.name]}
                   >
                     {p.values?.map((v) => (
@@ -359,14 +365,18 @@ export default function ProductForm({
                     key={index}
                     className="flex flex-col items-center justify-end"
                   >
-                    <img
+                    <Image
                       src={url}
                       alt={`Imagem não encontrada`}
                       className="object-contain h-28 w-28 p-2 bg-white shadow-sm rounded-sm border border-gray-200"
+                      width={112}
+                      height={112}
                     />
                     <button
                       type="button"
-                      onClick={() => deleteImage(index)}
+                      onClick={() => {
+                        void deleteImage(index)
+                      }}
                       className="btn-default mt-2"
                     >
                       <svg
@@ -410,7 +420,7 @@ export default function ProductForm({
                     {progress > 0 ? (
                       <>
                         <div className="p-2">
-                          <LoadingSvg />
+                          <TailSpin stroke="#000" />
                         </div>
                       </>
                     ) : (
@@ -446,7 +456,9 @@ export default function ProductForm({
                 id="description"
                 placeholder="Descrição"
                 required
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value)
+                }}
                 value={description}
                 className="dark:textDarkMode"
               ></textarea>
@@ -462,7 +474,9 @@ export default function ProductForm({
                 id="price"
                 placeholder="Preço"
                 required
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  setPrice(e.target.value)
+                }}
                 value={price}
               />
             </label>
@@ -473,7 +487,7 @@ export default function ProductForm({
         </>
       ) : (
         <>
-          <LoadingSvg />
+          <TailSpin stroke="#000" />
         </>
       )}
     </form>

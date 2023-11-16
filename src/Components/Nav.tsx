@@ -171,13 +171,7 @@ export default function Nav({ showNav }: showProp) {
           </svg>
           Configurações
         </Link>
-        <button
-          type="button"
-          onClick={() => {
-            void Logout()
-          }}
-          className={inactiveLink}
-        >
+        <button type="button" onClick={Logout} className={inactiveLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

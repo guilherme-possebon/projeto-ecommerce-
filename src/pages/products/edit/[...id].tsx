@@ -3,8 +3,7 @@ import ProductForm from '@/Components/ProductForm'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import LoadingSvg from '@/../public/Loading.svg'
-
+import { TailSpin } from 'react-loading-icons'
 export default function EditProductPage() {
   const router = useRouter()
   const { id } = router.query
@@ -31,7 +30,7 @@ export default function EditProductPage() {
       {Object.keys(productInfo).length > 0 ? (
         <ProductForm {...productInfo} />
       ) : (
-        <LoadingSvg />
+        <TailSpin stroke="#000" />
       )}
     </Layout>
   )

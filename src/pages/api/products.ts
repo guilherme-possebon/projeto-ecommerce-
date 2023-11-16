@@ -3,6 +3,7 @@ import type { ProductInterface } from '../../../models/Product'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { mongooseConnect } from '../../../lib/mongoose'
 import { isAdminRequest } from './auth/[...nextauth]'
+import mongoose from 'mongoose'
 
 export default async function handle(
   req: NextApiRequest,
@@ -60,6 +61,12 @@ export default async function handle(
       selectedCategory,
       productProperties
     }: ProductInterface = req.body
+
+    const categoryToUpdate =
+      selectedCategory && selectedCategory.length > 0
+        ? new mongoose.Types.ObjectId(selectedCategory)
+        : undefined
+
     await Product.updateOne(
       { _id },
       {
@@ -67,10 +74,11 @@ export default async function handle(
         description,
         price,
         productUrls,
-        category: selectedCategory.length > 0 || undefined,
+        category: categoryToUpdate,
         productProperties
       }
     )
+
     res.json(true)
   }
   if (method === 'DELETE') {

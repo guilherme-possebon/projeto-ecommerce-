@@ -1,10 +1,9 @@
 import Layout from '@/Components/Layout'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
-import LoadingSvg from '@/../public/Loading.svg'
-import { CategoryInterface } from '../../models/Category'
-import React from 'react'
+import { TailSpin } from 'react-loading-icons'
+import { type CategoryInterface } from '../../models/Category'
 
 export default function Categories() {
   const [name, setName] = useState('')
@@ -13,7 +12,7 @@ export default function Categories() {
   const [editedCategory, setEditedCategory] =
     useState<CategoryInterface | null>(null)
   const [properties, setProperties] = useState<
-    { name: string; values: string }[]
+    Array<{ name: string; values: string }>
   >([])
 
   useEffect(() => {
@@ -21,7 +20,7 @@ export default function Categories() {
   }, [])
 
   function fetchCategories() {
-    axios.get('/api/categories').then((result) => {
+    void axios.get('/api/categories').then((result) => {
       setCategories(result.data)
     })
   }
@@ -76,7 +75,7 @@ export default function Categories() {
       buttonsStyling: false
     })
 
-    swalWithBootstrapButtons
+    void swalWithBootstrapButtons
       .fire({
         title: 'Você tem certeza?',
         text: `Você ira deletar a categoria "${category.name}"`,
@@ -91,13 +90,13 @@ export default function Categories() {
           const { _id }: CategoryInterface = category
           await axios.delete('/api/categories?_id=' + _id)
           fetchCategories()
-          swalWithBootstrapButtons.fire(
+          void swalWithBootstrapButtons.fire(
             'Deletado!',
             'Categoria deletada com sucesso.',
             'success'
           )
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          swalWithBootstrapButtons.fire(
+          void swalWithBootstrapButtons.fire(
             'Cancelado',
             'Sua categora está salva :)',
             'error'
@@ -157,11 +156,15 @@ export default function Categories() {
           <input
             type="text"
             placeholder={'Nome da categoria'}
-            onChange={(ev) => setName(ev.target.value)}
+            onChange={(ev) => {
+              setName(ev.target.value)
+            }}
             value={name}
           />
           <select
-            onChange={(ev) => setParentCategory(ev.target.value)}
+            onChange={(ev) => {
+              setParentCategory(ev.target.value)
+            }}
             value={parentCategory}
           >
             <option>Sem categoria</option>
@@ -190,7 +193,9 @@ export default function Categories() {
                 <button
                   type="button"
                   className="btn-default text-sm"
-                  onClick={() => setProperties([])}
+                  onClick={() => {
+                    setProperties([])
+                  }}
                 >
                   Limpar propriedades
                 </button>
@@ -207,23 +212,25 @@ export default function Categories() {
                   type="text"
                   className="mb-0"
                   value={property.name}
-                  onChange={(ev) =>
+                  onChange={(ev) => {
                     handlePropertyNameChange(index, property, ev.target.value)
-                  }
+                  }}
                   placeholder="Nome da propriedade (exemplo: cor)"
                 />
                 <input
                   type="text"
                   className="mb-0"
                   value={property.values}
-                  onChange={(ev) =>
+                  onChange={(ev) => {
                     handlePropertyValueChange(index, property, ev.target.value)
-                  }
+                  }}
                   placeholder="Valores, separados por virgulas"
                 />
                 <button
                   type="button"
-                  onClick={() => removeProperty(index)}
+                  onClick={() => {
+                    removeProperty(index)
+                  }}
                   className="btn-default"
                 >
                   <svg
@@ -292,7 +299,9 @@ export default function Categories() {
                       <button
                         className="btn-default mr-1"
                         type="button"
-                        onClick={() => editCategory(category)}
+                        onClick={() => {
+                          editCategory(category)
+                        }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +322,9 @@ export default function Categories() {
                       <button
                         className="btn-red"
                         type="button"
-                        onClick={() => deleteCategory(category)}
+                        onClick={() => {
+                          deleteCategory(category)
+                        }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -337,7 +348,7 @@ export default function Categories() {
               </tbody>
             </table>
           ) : (
-            <LoadingSvg />
+            <TailSpin stroke="#000" />
           )}
         </>
       )}
