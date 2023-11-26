@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -76,11 +75,11 @@ export default function ProductForm({
       description,
       price,
       productUrls,
-      selectedCategory,
+      selectedCategory: selectedCategory || undefined,
       productProperties
     }
 
-    console.log(data, 11)
+    console.log(data, 'data')
 
     if (_id) {
       // update
@@ -214,43 +213,50 @@ export default function ProductForm({
   const [isLoadedCategories, setIsLoadedCategories] = useState<boolean>(false)
   const [isNewProduct, setIsNewProduct] = useState<boolean>(false)
 
+  function UseEffectEditProduct() {
+    useEffect(() => {
+      if (id === '') {
+        return undefined
+      } else {
+        void axios.get('/api/products?id=' + id).then((response) => {
+          const {
+            productUrls,
+            category
+          }: { productUrls: string[]; category: string } = response.data
+          setProductUrls(productUrls)
+          setSelectedCategory(category)
+
+          setIsLoadedProducts(true)
+
+          void axios.get('/api/categories').then((result) => {
+            setCategories(result.data)
+            setIsLoadedCategories(true)
+          })
+        })
+      }
+    }, [])
+  }
+
+  function UseEffectNewProduct() {
+    useEffect(() => {
+      void axios.get('/api/categories').then((result) => {
+        setCategories(result.data)
+        setIsLoadedCategories(true)
+        setIsLoadedProducts(true)
+        setIsNewProduct(true)
+      })
+    }, [])
+  }
   switch (true) {
     case router.pathname === '/products/edit/[...id]':
-      useEffect(() => {
-        if (!id) {
-          return undefined
-        } else {
-          void axios.get('/api/products?id=' + id).then((response) => {
-            const {
-              productUrls,
-              category
-            }: { productUrls: string[]; category: string } = response.data
-            setProductUrls(productUrls)
-            setSelectedCategory(category)
-            setIsLoadedProducts(true)
-          })
-        }
-      }, [id])
-
-      useEffect(() => {
-        void axios.get('/api/categories').then((result) => {
-          setCategories(result.data)
-          setIsLoadedCategories(true)
-        })
-      }, [])
+      UseEffectEditProduct()
       break
     case router.pathname === '/products/new':
-      useEffect(() => {
-        void axios.get('/api/categories').then((result) => {
-          setCategories(result.data)
-          setIsLoadedCategories(true)
-          setIsLoadedProducts(true)
-          setIsNewProduct(true)
-        })
-      }, [])
-
+      UseEffectNewProduct()
       break
   }
+
+  // TODO testar se deu certo
 
   const propertiesToFill: Array<{
     values: string[]
@@ -321,7 +327,10 @@ export default function ProductForm({
                 setSelectedCategory(ev.target.value)
               }}
             >
-              <option key={'0'} value="">
+              <option
+                key='6563cd12b817b16d8ad510ce'
+                value="6563cd12b817b16d8ad510ce"
+              >
                 Sem categoria
               </option>
               {categories.length > 0 &&

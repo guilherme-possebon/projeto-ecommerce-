@@ -38,7 +38,7 @@ export default async function handle(
         description,
         price,
         productUrls,
-        category: selectedCategory.length > 0 || undefined,
+        category: selectedCategory || undefined,
         productProperties
       })
       res.json(productDoc)
@@ -49,7 +49,6 @@ export default async function handle(
       res.status(500).json({ error: 'Failed to create product' })
     }
   }
-  // TODO resolver esse bug
   if (method === 'PUT') {
     // possibilita a edição do produto
     const {
@@ -62,10 +61,9 @@ export default async function handle(
       productProperties
     }: ProductInterface = req.body
 
-    const categoryToUpdate =
-      selectedCategory && selectedCategory.length > 0
-        ? new mongoose.Types.ObjectId(selectedCategory)
-        : undefined
+    const categoryToUpdate = selectedCategory
+      ? new mongoose.Types.ObjectId(selectedCategory)
+      : undefined
 
     await Product.updateOne(
       { _id },
