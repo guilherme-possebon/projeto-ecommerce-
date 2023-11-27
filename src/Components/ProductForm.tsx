@@ -255,9 +255,6 @@ export default function ProductForm({
       UseEffectNewProduct()
       break
   }
-
-  // TODO testar se deu certo
-
   const propertiesToFill: Array<{
     values: string[]
     name: string
@@ -297,7 +294,7 @@ export default function ProductForm({
 
   return (
     <form onSubmit={saveProduct}>
-      {isLoadedCategories && isLoadedProducts && (
+      {isLoadedCategories && isLoadedProducts ? (
         <>
           {/* -----------------------------------------------Nome do produto----------------------------------------------- */}
           <div className="mb-2">
@@ -494,6 +491,10 @@ export default function ProductForm({
             {isNewProduct ? 'Criar' : 'Salvar'}
           </button>
         </>
+      ) : (
+        <div className="w-full h-full flex justify-center">
+          <TailSpin stroke="#000" />
+        </div>
       )}
     </form>
   )

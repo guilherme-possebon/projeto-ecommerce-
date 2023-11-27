@@ -3,6 +3,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../models/Product'
+import { TailSpin } from 'react-loading-icons'
 import { useProductContext } from '@/Context/ProductContext'
 import Swal from 'sweetalert2'
 
@@ -61,7 +62,7 @@ export default function Products() {
         Adicionar um novo produto
       </Link>
 
-      {Object.keys(products).length > 0 && (
+      {Object.keys(products).length > 0 ? (
         <table className="basic mt-5">
           <thead>
             <tr>
@@ -121,6 +122,10 @@ export default function Products() {
             </>
           </tbody>
         </table>
+      ) : (
+        <div className="w-full h-full flex justify-center">
+          <TailSpin stroke="#000" />
+        </div>
       )}
     </Layout>
   )
