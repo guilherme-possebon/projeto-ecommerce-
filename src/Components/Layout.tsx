@@ -17,7 +17,11 @@ export default function Layout({ children }: LayoutProp) {
     await signIn('google')
   }
   if (status === 'loading') {
-    return <TailSpin stroke="#000" />
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <TailSpin stroke="#000" />
+      </div>
+    )
   }
   if (session !== null) {
     return (

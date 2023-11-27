@@ -297,7 +297,7 @@ export default function ProductForm({
 
   return (
     <form onSubmit={saveProduct}>
-      {isLoadedCategories && isLoadedProducts ? (
+      {isLoadedCategories && isLoadedProducts && (
         <>
           {/* -----------------------------------------------Nome do produto----------------------------------------------- */}
           <div className="mb-2">
@@ -328,7 +328,7 @@ export default function ProductForm({
               }}
             >
               <option
-                key='6563cd12b817b16d8ad510ce'
+                key="6563cd12b817b16d8ad510ce"
                 value="6563cd12b817b16d8ad510ce"
               >
                 Sem categoria
@@ -493,10 +493,6 @@ export default function ProductForm({
           <button className="btn-primary" type="submit">
             {isNewProduct ? 'Criar' : 'Salvar'}
           </button>
-        </>
-      ) : (
-        <>
-          <TailSpin stroke="#000" />
         </>
       )}
     </form>

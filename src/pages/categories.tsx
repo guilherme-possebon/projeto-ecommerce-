@@ -2,7 +2,6 @@ import Layout from '@/Components/Layout'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
-import { TailSpin } from 'react-loading-icons'
 import { type CategoryInterface } from '../../models/Category'
 
 export default function Categories() {
@@ -281,7 +280,7 @@ export default function Categories() {
       </form>
       {!editedCategory && (
         <>
-          {categories.length > 0 ? (
+          {categories.length > 0 && (
             <table className="basic mt-4">
               <thead>
                 <tr>
@@ -347,8 +346,6 @@ export default function Categories() {
                 ))}
               </tbody>
             </table>
-          ) : (
-            <TailSpin stroke="#000" />
           )}
         </>
       )}
