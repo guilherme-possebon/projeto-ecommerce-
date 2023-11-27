@@ -3,7 +3,6 @@ import ProductForm from '@/Components/ProductForm'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { TailSpin } from 'react-loading-icons'
 export default function EditProductPage() {
   const router = useRouter()
   const { id } = router.query
@@ -27,11 +26,7 @@ export default function EditProductPage() {
   return (
     <Layout>
       <h1>Editar produto</h1>
-      {Object.keys(productInfo).length > 0 ? (
-        <ProductForm {...productInfo} />
-      ) : (
-        <TailSpin stroke="#000" />
-      )}
+      {Object.keys(productInfo).length > 0 && <ProductForm {...productInfo} />}
     </Layout>
   )
 }
