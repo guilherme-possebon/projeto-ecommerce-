@@ -1,10 +1,10 @@
-import Layout from '@/Components/Layout'
+import Layout from '../Components/Layout'
 import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../models/Product'
 import { TailSpin } from 'react-loading-icons'
-import { useProductContext } from '@/Context/ProductContext'
+import { useProductContext } from '../Context/ProductContext'
 import Swal from 'sweetalert2'
 
 export default function Products() {
@@ -58,7 +58,7 @@ export default function Products() {
 
   return (
     <Layout>
-      <Link href={'/products/new'} className="btn-primary">
+      <Link href={'/produtos/novo_produto'} className="btn-primary">
         Adicionar um novo produto
       </Link>
 
@@ -78,7 +78,7 @@ export default function Products() {
                   <td>
                     <Link
                       className="btn-default"
-                      href={'/products/edit/' + product._id}
+                      href={'/produtos/editar/' + product._id}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@ export default function Products() {
                     </Link>
                     <Link
                       className="btn-red"
-                      href={'/products/delete/' + product._id}
+                      href={'/produtos/deletar/' + product._id}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

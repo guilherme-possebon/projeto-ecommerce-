@@ -96,7 +96,7 @@ export default function ProductForm({
   }
 
   if (goToProducts) {
-    void router.push('/products')
+    void router.push('/produtos')
   }
 
   // ------------------Imagem------------------
@@ -248,10 +248,10 @@ export default function ProductForm({
     }, [])
   }
   switch (true) {
-    case router.pathname === '/products/edit/[...id]':
+    case router.pathname === '/produtos/editar/[...id]':
       UseEffectEditProduct()
       break
-    case router.pathname === '/products/new':
+    case router.pathname === '/produtos/novo_produto':
       UseEffectNewProduct()
       break
   }

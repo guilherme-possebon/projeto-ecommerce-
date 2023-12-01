@@ -1,9 +1,9 @@
-import Layout from '@/Components/Layout'
+import Layout from '../../../Components/Layout'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { type ProductInterface } from '../../../../models/Product'
-import { useProductContext } from '@/Context/ProductContext'
+import { useProductContext } from '../../../Context/ProductContext'
 
 export default function DeleteProductPage() {
   const router = useRouter()
@@ -28,7 +28,7 @@ export default function DeleteProductPage() {
   }, [id, idParam])
 
   function goBack() {
-    void router.push('/products')
+    void router.push('/produtos')
   }
 
   async function deleteProduct() {

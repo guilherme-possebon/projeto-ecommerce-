@@ -1,5 +1,5 @@
-import Layout from '@/Components/Layout'
-import ProductForm from '@/Components/ProductForm'
+import Layout from '../../../Components/Layout'
+import ProductForm from '../../..//Components/ProductForm'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'

@@ -1,4 +1,4 @@
-import Layout from '@/Components/Layout'
+import Layout from '../Components/Layout'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
