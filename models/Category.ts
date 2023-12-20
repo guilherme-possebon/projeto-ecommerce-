@@ -5,9 +5,9 @@ export interface CategoryInterface {
   id: Key | null | undefined
   name: string
   _id: string
-  parent: string & { name: string; _id: string }
+  parent: { name: string; _id: string; properties: string[] }
   parentCategory: string
-  properties: Array<{ name: string; values: string }>
+  properties: Array<{ name: string; values: string[] }>
 }
 
 const CategorySchema = new Schema({

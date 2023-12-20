@@ -20,7 +20,7 @@ export default function Categories() {
   }, [])
 
   function fetchCategories() {
-    void axios.get('/api/categories').then((result) => {
+    void axios.get<CategoryInterface[]>('/api/categories').then((result) => {
       setCategories(result.data)
     })
   }

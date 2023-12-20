@@ -1,8 +1,10 @@
 import Layout from '../../../Components/Layout'
 import ProductForm from '../../..//Components/ProductForm'
 import axios from 'axios'
+import type { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import type { ProductInterface } from '../../../../models/Product'
 export default function EditProductPage() {
   const router = useRouter()
   const { id } = router.query
@@ -15,7 +17,7 @@ export default function EditProductPage() {
     }
     axios
       .get(`/api/products?id=${idParam}`)
-      .then((response) => {
+      .then((response: AxiosResponse<ProductInterface>) => {
         setProductInfo(response.data)
       })
       .catch((error) => {

@@ -13,7 +13,7 @@ export default function Products() {
   const { productDeleted, setProductDeleted } = useProductContext()
   const { productCreated, setProductCreated } = useProductContext()
   useEffect(() => {
-    void axios.get('/api/products').then((response) => {
+    void axios.get<ProductInterface[]>('/api/products').then((response) => {
       setProducts(response.data)
     })
   }, [])

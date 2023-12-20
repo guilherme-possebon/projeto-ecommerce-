@@ -13,6 +13,7 @@ import { storage } from '../../services/firebase'
 import { TailSpin } from 'react-loading-icons'
 import { useProductContext } from '@/Context/ProductContext'
 import Image from 'next/image'
+import type { CategoryInterface } from '../../models/Category'
 
 export interface ExistingType {
   title?: string
@@ -228,10 +229,12 @@ export default function ProductForm({
 
           setIsLoadedProducts(true)
 
-          void axios.get('/api/categories').then((result) => {
-            setCategories(result.data)
-            setIsLoadedCategories(true)
-          })
+          void axios
+            .get<CategoryInterface[]>('/api/categories')
+            .then((result) => {
+              setCategories(result.data)
+              setIsLoadedCategories(true)
+            })
         })
       }
     }, [])
@@ -239,7 +242,7 @@ export default function ProductForm({
 
   function UseEffectNewProduct() {
     useEffect(() => {
-      void axios.get('/api/categories').then((result) => {
+      void axios.get<CategoryInterface[]>('/api/categories').then((result) => {
         setCategories(result.data)
         setIsLoadedCategories(true)
         setIsLoadedProducts(true)
