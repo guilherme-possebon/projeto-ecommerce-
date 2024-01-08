@@ -10,13 +10,22 @@ export interface ProductInterface {
   productProperties: object
 }
 
-const ProductShema = new Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  productUrls: { type: Array, required: false },
-  category: { type: mongoose.Types.ObjectId, ref: 'Category', required: false },
-  productProperties: { type: Object }
-})
+const ProductShema = new Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    productUrls: { type: Array, required: false },
+    category: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Category',
+      required: false
+    },
+    productProperties: { type: Object }
+  },
+  {
+    timestamps: true
+  }
+)
 
 export const Product = models.Product || model('Product', ProductShema)
