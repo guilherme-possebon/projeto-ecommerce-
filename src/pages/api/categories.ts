@@ -16,11 +16,31 @@ export default async function handle(
 
     if (method === 'GET') {
       const categories = await Category.find().populate('parent')
+
+      // console.log(categories, 'categories')
+
       res.json(categories)
     } else if (method === 'POST') {
-      const categoryData: CategoryInterface = req.body
-      const createdCategory = await Category.create(categoryData)
-      res.json(createdCategory)
+      const { name, parentCategory, properties }: CategoryInterface = req.body
+
+      const parentToUpdate =
+        parentCategory && parentCategory.length > 0
+          ? new mongoose.Types.ObjectId(parentCategory)
+          : undefined
+
+      try {
+        const createdCategory = await Category.create({
+          name,
+          parent: parentToUpdate,
+          properties
+        })
+
+        console.log(createdCategory, 'createdCategory')
+        res.json(createdCategory)
+      } catch (error) {
+        console.error(error)
+        res.status(400).json({ error: 'Validation Error' })
+      }
     } else if (method === 'PUT') {
       const { name, parentCategory, properties, _id }: CategoryInterface =
         req.body

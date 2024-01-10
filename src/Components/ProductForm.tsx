@@ -341,28 +341,31 @@ export default function ProductForm({
                 ))}
             </select>
             {propertiesToFill.length > 0 &&
-              propertiesToFill.map((p, index) => (
-                <div key={index} className="text-black dark:textDarkMode">
-                  <p className="pName">
-                    {p.name[0].toUpperCase() + p.name.substring(1)}:
-                  </p>
+              propertiesToFill
+                .slice()
+                .reverse()
+                .map((p, index) => (
+                  <div key={index} className="text-black dark:textDarkMode">
+                    <p className="pName">
+                      {p.name[0].toUpperCase() + p.name.substring(1)}:
+                    </p>
 
-                  <select
-                    name="propertiesValues"
-                    id="propertiesValues"
-                    onChange={(ev) => {
-                      setProductProp(p.name, ev.target.value)
-                    }}
-                    value={productProperties[p.name]}
-                  >
-                    {p.values?.map((v) => (
-                      <option key={v} value={v}>
-                        {v}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
+                    <select
+                      name="propertiesValues"
+                      id="propertiesValues"
+                      onChange={(ev) => {
+                        setProductProp(p.name, ev.target.value)
+                      }}
+                      value={productProperties[p.name]}
+                    >
+                      {p.values?.map((v) => (
+                        <option key={v} value={v}>
+                          {v}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
           </label>
           <label htmlFor="Photo">
             Fotos

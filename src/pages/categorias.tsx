@@ -42,15 +42,23 @@ export default function Categories() {
       }))
     }
 
+    console.log('Data before API call:', data)
+
     if (editedCategory) {
       await axios.put('/api/categories', { ...data, _id: editedCategory._id })
       setEditedCategory(null)
     } else {
+      console.log(data, 111)
       await axios.post('/api/categories', data)
+      console.log(data, 222)
     }
+
     setName('')
     setParentCategory('')
     setProperties([])
+
+    console.log('Data after state updates:', name, parentCategory, properties)
+
     fetchCategories()
   }
 
@@ -58,6 +66,7 @@ export default function Categories() {
     setEditedCategory(category)
     setName(category.name)
     setParentCategory(category.parent?._id)
+    console.log(parentCategory, 3333)
     setProperties(
       category.properties?.map(({ name, values }) => ({
         name,

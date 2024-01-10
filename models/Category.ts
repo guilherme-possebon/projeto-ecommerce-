@@ -11,7 +11,7 @@ export interface CategoryInterface {
 }
 
 const CategorySchema = new Schema({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
   parent: { type: mongoose.Types.ObjectId, ref: 'Category' },
   properties: { type: [{ type: Object }], default: undefined }
 })
