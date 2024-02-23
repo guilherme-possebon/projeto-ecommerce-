@@ -17,8 +17,6 @@ export default async function handle(
     if (method === 'GET') {
       const categories = await Category.find().populate('parent')
 
-      // console.log(categories, 'categories')
-
       res.json(categories)
     } else if (method === 'POST') {
       const { name, parentCategory, properties }: CategoryInterface = req.body
