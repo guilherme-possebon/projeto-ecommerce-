@@ -107,7 +107,7 @@ export default function Categories() {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           void swalWithBootstrapButtons.fire(
             'Cancelado',
-            'Sua categora está salva :)',
+            'Sua categoria está salva :)',
             'error'
           )
         }

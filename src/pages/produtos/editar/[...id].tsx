@@ -5,6 +5,7 @@ import type { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import type { ProductInterface } from '../../../../models/Product'
+
 export default function EditProductPage() {
   const router = useRouter()
   const { id } = router.query
