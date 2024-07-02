@@ -14,8 +14,6 @@ interface ProductContextType {
   setProductCreated: (Created: boolean) => void
 }
 
-/* -----------------------------------------------Save----------------------------------------------- */
-
 const ProductContext = createContext<ProductContextType | undefined>(undefined)
 
 export function useProductContext(): ProductContextType {

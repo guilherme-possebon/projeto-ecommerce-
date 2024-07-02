@@ -66,7 +66,7 @@ export default function ProductForm({
 
   const router = useRouter()
 
-  /* -----------------------------------------------Salvar Produto----------------------------------------------- */
+  // #region Salvar Produto
 
   async function saveProduct(ev: { preventDefault: () => void }) {
     ev.preventDefault()
@@ -108,7 +108,7 @@ export default function ProductForm({
     contentType: 'image/jpeg'
   }
 
-  /* -----------------------------------------------Adicionar Foto----------------------------------------------- */
+  // #region Adicionar Foto
 
   function addProductPhoto(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
@@ -154,7 +154,7 @@ export default function ProductForm({
     }
   }
 
-  /* -----------------------------------------------Deletar Foto----------------------------------------------- */
+  // #region Deletar Foto
 
   async function deleteImage(index: number) {
     const fileUrlToDelete = productUrls[index]
