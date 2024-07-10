@@ -144,7 +144,7 @@ export default function Nav({ showNav }: showProp) {
               d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
             />
           </svg>
-          Pedidos
+          Pedidos (Em breve)
         </Link>
         <Link
           href={'/configuracoes'}
@@ -171,7 +171,7 @@ export default function Nav({ showNav }: showProp) {
               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          Configurações
+          Configurações (Em breve)
         </Link>
         <button type="button" onClick={Logout} className={inactiveLink}>
           <svg
