@@ -1,16 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import NextAuth, { getServerSession } from 'next-auth'
+import NextAuth /* { getServerSession } */ from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import clientPromise from '../../../../lib/mongodb'
 
-const adminEmails = [
-  'gpossebon67@gmail.com',
-  'guilhermepossebon06@gmail.com',
-  'schneider.gab0507@gmail.com',
-  'pedrohenlucca01@gmail.com',
-  'lucaspiassetta@gmail.com'
-]
+const adminEmails = []
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -35,10 +29,10 @@ export const authOptions = {
 export default NextAuth(authOptions)
 
 export async function isAdminRequest(req, res) {
-  const session = await getServerSession(req, res, authOptions)
-  if (!adminEmails.includes(session?.user?.email)) {
-    res.status(401)
-    res.end()
-    throw new Error(`Usuario sem permição`)
-  }
+  // const session = await getServerSession(req, res, authOptions)
+  // if (!adminEmails.includes(session?.user?.email)) {
+  //   res.status(401)
+  //   res.end()
+  //   throw new Error(`Usuario sem permição`)
+  // }
 }
