@@ -23,7 +23,7 @@ export default function Layout({ children }: LayoutProp) {
       </div>
     )
   }
-  if (session === null) {
+  if (session !== null) {
     return (
       <>
         <Head>
