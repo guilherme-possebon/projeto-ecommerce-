@@ -90,10 +90,11 @@ export default function ProductForm({
       await axios.post('/api/products', data)
     }
     setGoToProducts(true)
-    setProductSaved(true)
     if (isNewProduct) {
       setProductCreated(true)
-    } else setProductSaved(true)
+    } else {
+      setProductSaved(true)
+    }
   }
 
   if (goToProducts) {
