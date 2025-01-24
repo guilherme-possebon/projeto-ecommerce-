@@ -12,12 +12,6 @@ export default function Products() {
   const { productSaved, setProductSaved } = useProductContext()
   const { productDeleted, setProductDeleted } = useProductContext()
   const { productCreated, setProductCreated } = useProductContext()
-  useEffect(() => {
-    void axios.get<ProductInterface[]>('/api/products').then((response) => {
-      setProducts(response.data)
-    })
-  }, [])
-
   const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -25,6 +19,12 @@ export default function Products() {
     timer: 1000,
     timerProgressBar: true
   })
+
+  useEffect(() => {
+    void axios.get<ProductInterface[]>('/api/products').then((response) => {
+      setProducts(response.data)
+    })
+  }, [])
 
   useEffect(() => {
     if (productSaved ?? false) {
